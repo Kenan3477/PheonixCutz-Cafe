@@ -165,16 +165,15 @@ export function EatMenu() {
       </section>
 
       <section className="mx-auto max-w-6xl px-5 pb-6 md:px-8">
-        <div className="overflow-hidden rounded-[1.8rem] border border-line bg-paper">
-          <div className="relative min-h-[520px] md:min-h-[720px]">
-            <Image
-              src="/images/real/printed-menu.jpg"
-              alt="Printed Phoenix Cafe breakfast and lunch menu"
-              fill
-              className="object-contain bg-cream"
-              sizes="100vw"
-            />
-          </div>
+        <div className="overflow-hidden rounded-[1.8rem] border border-line bg-cream">
+          <Image
+            src="/images/real/printed-menu.jpg"
+            alt="Printed Phoenix Cafe breakfast and lunch menu"
+            width={1687}
+            height={1206}
+            className="h-auto w-full"
+            sizes="100vw"
+          />
         </div>
       </section>
 
