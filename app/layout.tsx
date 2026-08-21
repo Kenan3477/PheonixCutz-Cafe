@@ -22,7 +22,7 @@ const script = Great_Vibes({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://phoenixcutzcafe.co.uk"),
+  metadataBase: new URL(site.url),
   title: {
     default: "Phoenix Cutz & Cafe · Winton, Bournemouth",
     template: "%s · Phoenix Cutz & Cafe",
@@ -56,7 +56,7 @@ const jsonLd = {
       name: "Phoenix Cutz & Cafe",
       image: "/images/real/breakfast-full-english-mushrooms.jpg",
       telephone: site.phoneTel,
-      url: "https://phoenixcutzcafe.co.uk",
+      url: site.url,
       servesCuisine: ["Breakfast", "Cafe"],
       address: {
         "@type": "PostalAddress",

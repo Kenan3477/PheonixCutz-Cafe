@@ -22,6 +22,10 @@ npm run dev
 
 Then open [http://localhost:3000](http://localhost:3000).
 
+## Live
+
+[https://pheonix-cutz-cafe.vercel.app](https://pheonix-cutz-cafe.vercel.app) — Vercel deploys from `main` (production) and from pull requests (preview).
+
 ## Stack
 
 Next.js, TypeScript, Tailwind CSS. Images live in `public/images/real/`.
