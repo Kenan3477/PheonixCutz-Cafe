@@ -24,7 +24,11 @@ Then open [http://localhost:3000](http://localhost:3000).
 
 ## Live
 
-[https://pheonix-cutz-cafe.vercel.app](https://pheonix-cutz-cafe.vercel.app) — Vercel deploys from `main` (production) and from pull requests (preview).
+Open this exact address: [https://pheonix-cutz-cafe.vercel.app](https://pheonix-cutz-cafe.vercel.app)
+
+The Vercel project name keeps the repo spelling **pheonix** (E after PH). Phones often autocorrect that to **phoenix**, which is a different address and shows Vercel’s “not found” page. If Safari still shows an old 404, open the link in a Private tab.
+
+Vercel deploys from `main` (production) and from pull requests (preview).
 
 ## Stack
 
