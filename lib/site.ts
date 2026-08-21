@@ -113,39 +113,72 @@ export const kitchen = {
   plates: [
     {
       name: "Full English",
+      section: "breakfast",
+      tag: "The house plate",
       photo: "/images/real/breakfast-full-english-mushrooms.jpg",
       blurb:
-        "Sunny egg, back bacon, grilled sausage, hash brown, mushrooms, roasted tomato, and beans in a glass ramekin.",
+        "The classic Winton breakfast they put on the black-and-gold menu card.",
+      includes: [
+        "Fried egg",
+        "Back bacon",
+        "Grilled sausage",
+        "Hash brown",
+        "Mushrooms",
+        "Roasted tomato",
+        "Beans",
+      ],
     },
     {
       name: "The Big Hash",
+      section: "breakfast",
+      tag: "Hearty",
       photo: "/images/real/breakfast-hash-browns-sausage.jpg",
-      blurb:
-        "A stack of crisp triangular hash browns with sausage, bacon, fried egg, and beans.",
+      blurb: "A taller stack when you want more crunch than the standard plate.",
+      includes: [
+        "Hash browns",
+        "Sausage",
+        "Back bacon",
+        "Fried egg",
+        "Beans",
+      ],
     },
     {
-      name: "Garden Plate",
+      name: "Garden plate",
+      section: "breakfast",
+      tag: "Lighter",
       photo: "/images/real/breakfast-veggie-hash-browns.jpg",
-      blurb:
-        "Avocado, spinach, grilled tomato, mushrooms, hash brown, egg, beans, and a plant sausage.",
+      blurb: "Same kitchen, greener plate — avocado and spinach with the usual sides.",
+      includes: [
+        "Avocado",
+        "Spinach",
+        "Fried egg",
+        "Hash brown",
+        "Mushrooms",
+        "Roasted tomato",
+        "Beans",
+        "Plant sausage",
+      ],
     },
     {
-      name: "House Burger",
+      name: "House burger",
+      section: "plates",
+      tag: "Lunch",
       photo: "/images/real/interior-lime-green-booth-burger.jpg",
-      blurb:
-        "Double cheeseburger with lettuce on a sesame bun, fries in a wire basket. Shot in the lime booth.",
+      blurb: "Served in the lime booth, with fries in a wire basket.",
+      includes: [
+        "Double cheeseburger",
+        "Sesame bun",
+        "Lettuce",
+        "Fries",
+      ],
     },
     {
-      name: "Avocado Halloumi Bagel",
+      name: "Avocado halloumi bagel",
+      section: "plates",
+      tag: "Their line: simple, fresh, delicious",
       photo: "/images/real/bagel-sandwich-egg.jpg",
-      blurb:
-        "Toasted bagel, smashed avocado, grilled halloumi. Their own line: simple, fresh, delicious.",
-    },
-    {
-      name: "Coffee",
-      photo: "/images/real/coffee-latte-counter.jpg",
-      blurb:
-        "Velvet foam in a speckled navy mug. Buy six coffees, seventh free — loyalty card on the counter.",
+      blurb: "Toasted bagel from their own Instagram post.",
+      includes: ["Toasted bagel", "Smashed avocado", "Grilled halloumi"],
     },
   ],
   drinks: [

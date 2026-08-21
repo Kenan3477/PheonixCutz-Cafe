@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Wordmark } from "@/components/Brand";
 import { HoursPill } from "@/components/HoursPill";
@@ -14,6 +15,7 @@ const links = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-cream/90 backdrop-blur-xl">
@@ -24,7 +26,11 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="hover:text-ink"
+              className={
+                pathname === link.href
+                  ? "font-semibold text-ink underline decoration-gold decoration-2 underline-offset-8"
+                  : "hover:text-ink"
+              }
             >
               {link.label}
             </Link>
@@ -132,9 +138,16 @@ export function Footer() {
 }
 
 export function MobileDock() {
+  const pathname = usePathname();
+
   return (
     <nav className="fixed inset-x-3 bottom-3 z-50 grid grid-cols-3 gap-2 rounded-full border border-line bg-paper/95 p-1.5 shadow-xl backdrop-blur md:hidden">
-      <Link href="/menu" className="rounded-full px-2 py-2.5 text-center text-sm font-semibold">
+      <Link
+        href="/menu"
+        className={`rounded-full px-2 py-2.5 text-center text-sm font-semibold ${
+          pathname === "/menu" ? "bg-cream" : ""
+        }`}
+      >
         Menu
       </Link>
       <a
