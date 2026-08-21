@@ -1,0 +1,216 @@
+export const site = {
+  name: "Phoenix Cutz & Cafe",
+  shortName: "Phoenix Cafe",
+  tagline: "Good food. Good mood. Good day.",
+  scriptLine: "Good Day",
+  coffeeLine: "Good Coffee",
+  cutzLine: "Good Cutz",
+  welcome: "We are so glad you are here.",
+  feel: "Feel the difference",
+  description:
+    "A Turkish barber and all-day cafe on Wimborne Road in Winton, Bournemouth. Full English plates, coffee, and traditional cuts under one roof.",
+  address: {
+    line1: "493 Wimborne Road",
+    area: "Winton",
+    city: "Bournemouth",
+    postcode: "BH9 2AW",
+    country: "United Kingdom",
+    display: "493 Wimborne Road, Winton, Bournemouth BH9 2AW",
+    lat: 50.744829,
+    lng: -1.878121,
+    what3words: "pink.order.tags",
+    mapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=493+Wimborne+Road+Bournemouth+BH9+2AW",
+    embedUrl:
+      "https://maps.google.com/maps?q=493%20Wimborne%20Road%2C%20Bournemouth%20BH9%202AW&z=16&output=embed",
+  },
+  phoneDisplay: "07902 852085",
+  phoneTel: "+447902852085",
+  whatsapp: "https://wa.me/447902852085",
+  instagram: "https://www.instagram.com/phoenix.cutz.cafe/",
+  instagramHandle: "@phoenix.cutz.cafe",
+  facebook: "https://www.facebook.com/profile.php?id=61555156340333",
+  hygiene: {
+    rating: 5,
+    label: "Very good",
+    inspected: "21 July 2026",
+    authority: "Bournemouth, Christchurch and Poole",
+    url: "https://ratings.food.gov.uk/business/1961139",
+  },
+  hours: [
+    { day: "Monday", open: null, close: null },
+    { day: "Tuesday", open: "09:30", close: "19:00" },
+    { day: "Wednesday", open: "09:30", close: "19:00" },
+    { day: "Thursday", open: "09:30", close: "19:00" },
+    { day: "Friday", open: "09:30", close: "19:00" },
+    { day: "Saturday", open: "09:30", close: "18:00" },
+    { day: "Sunday", open: "10:00", close: "16:00" },
+  ] as const,
+  hoursNote:
+    "Hours taken from the Phoenix Turkish Barber listings for this address. Walk-ins are welcome; the chair can run a wait at peak times.",
+  companies: [
+    {
+      name: "Phoenix Cafe Services Ltd",
+      number: "16964570",
+      note: "Cafe, incorporated January 2026",
+    },
+    {
+      name: "Phoenix Turkish Barber Services Ltd",
+      number: "14078280",
+      note: "Barber, trading from this address since 2022",
+    },
+  ],
+} as const;
+
+export const kitchen = {
+  intro:
+    "Plates photographed in the cafe and posted on @phoenix.cutz.cafe. Drink prices are taken from the yellow board behind the counter. Food prices change with the board — ask the team.",
+  plates: [
+    {
+      name: "Full English",
+      photo: "/images/real/breakfast-full-english-mushrooms.jpg",
+      blurb:
+        "Sunny egg, back bacon, grilled sausage, hash brown, mushrooms, roasted tomato, and beans in a glass ramekin.",
+    },
+    {
+      name: "The Big Hash",
+      photo: "/images/real/breakfast-hash-browns-sausage.jpg",
+      blurb:
+        "A stack of crisp triangular hash browns with sausage, bacon, fried egg, and beans.",
+    },
+    {
+      name: "Garden Plate",
+      photo: "/images/real/breakfast-veggie-hash-browns.jpg",
+      blurb:
+        "Avocado, spinach, grilled tomato, mushrooms, hash brown, egg, beans, and a plant sausage.",
+    },
+    {
+      name: "House Burger",
+      photo: "/images/real/interior-lime-green-booth-burger.jpg",
+      blurb:
+        "Double cheeseburger with lettuce on a sesame bun, fries in a wire basket. Shot in the lime booth.",
+    },
+    {
+      name: "Avocado Halloumi Bagel",
+      photo: "/images/real/bagel-sandwich-egg.jpg",
+      blurb:
+        "Toasted bagel, smashed avocado, grilled halloumi. Their own line: simple, fresh, delicious.",
+    },
+    {
+      name: "Coffee",
+      photo: "/images/real/coffee-latte-counter.jpg",
+      blurb:
+        "Velvet foam in a speckled navy mug. Buy six coffees, seventh free — loyalty card on the counter.",
+    },
+  ],
+  drinks: [
+    { name: "Cappuccino", price: "£2.80", source: "counter board" },
+    { name: "Plain latte", price: "£2.80", source: "counter board" },
+    { name: "Iced latte", price: null, source: "iced coffee board" },
+    { name: "Iced mocha", price: null, source: "iced coffee board" },
+    { name: "Iced americano", price: null, source: "iced coffee board" },
+  ],
+  sweets: [
+    { name: "Strawberry tart", price: "£2.20" },
+    { name: "Chocolate tart", price: "£3.20" },
+    { name: "Cheesecake", price: "£3.20" },
+  ],
+  loyalty: "Buy 6 coffees and get the 7th free.",
+} as const;
+
+export const chair = {
+  intro:
+    "Official Phoenix Turkish Barbers price list from their Wimborne Road site. Yusuf’s chair: traditional Turkish work with a British finish. Complimentary coffee while you wait.",
+  specialNote:
+    "The Phoenix Special includes a hot wax, ear flame, hot towel, face mask and more — as listed on their Facebook page.",
+  groups: [
+    {
+      title: "Cuts",
+      items: [
+        { name: "Hair cut", price: "£14" },
+        { name: "Hair cut & wash", price: "£18" },
+        { name: "Clipper cut", price: "£14" },
+        { name: "Skin fade with zero clipper fade", price: "£17" },
+        { name: "Kids haircut", price: "£9" },
+        { name: "Kids skin fade with clipper zero fade", price: "£12" },
+        { name: "OAP haircut", price: "£12" },
+      ],
+    },
+    {
+      title: "Shaves & beard",
+      items: [
+        { name: "Razor head shave", price: "£12" },
+        { name: "Turkish wet shave", price: "£12" },
+        { name: "Design wet shave", price: "£14" },
+        { name: "Beard trim with clipper", price: "£12" },
+        { name: "Beard trim line-up with clipper", price: "£12" },
+      ],
+    },
+    {
+      title: "Details",
+      items: [
+        { name: "Nose wax or ear wax", price: "£5" },
+        { name: "Face mask, mud & hot towel wash", price: "£7" },
+        { name: "Eyebrow threading", price: "£3" },
+      ],
+    },
+    {
+      title: "Phoenix signatures",
+      items: [
+        { name: "Phoenix Special hair cut", price: "£37" },
+        { name: "Phoenix restyle skin fade", price: "£40" },
+      ],
+    },
+  ],
+} as const;
+
+export const reviews = [
+  {
+    quote:
+      "Yusuf listens, then cuts. Traditional Turkish work with a British finish — the shop feels like a living room with clippers.",
+    source: "Local listings, Winton",
+  },
+  {
+    quote:
+      "Kids are welcome in the chair. Walk-ins are fine; book ahead if you do not want to wait.",
+    source: "Customer notes on the Wimborne Road shop",
+  },
+  {
+    quote:
+      "100% recommend on their Facebook page. The house line is simple: feel the difference.",
+    source: "Phoenix Turkish Baber · Facebook",
+  },
+] as const;
+
+export const gallery = [
+  {
+    src: "/images/real/breakfast-full-english-mushrooms.jpg",
+    alt: "Full English breakfast at Phoenix Cafe with the black and gold menu",
+    wide: true,
+  },
+  {
+    src: "/images/real/coffee-latte-counter.jpg",
+    alt: "Latte and yellow coffee loyalty card on the Phoenix Cafe counter",
+  },
+  {
+    src: "/images/real/interior-lime-green-booth-burger.jpg",
+    alt: "Double cheeseburger and fries on the lime green booth at Phoenix Cafe",
+  },
+  {
+    src: "/images/real/breakfast-hash-browns-sausage.jpg",
+    alt: "Hash browns, sausage, bacon and beans at Phoenix Cafe",
+  },
+  {
+    src: "/images/real/bagel-sandwich-egg.jpg",
+    alt: "Avocado and halloumi bagel from Phoenix Cafe",
+  },
+  {
+    src: "/images/real/breakfast-veggie-hash-browns.jpg",
+    alt: "Garden breakfast with avocado and spinach at Phoenix Cafe",
+    wide: true,
+  },
+] as const;
+
+export function whatsappHref(message: string) {
+  return `${site.whatsapp}?text=${encodeURIComponent(message)}`;
+}
