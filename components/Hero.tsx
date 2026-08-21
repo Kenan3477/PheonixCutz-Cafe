@@ -11,10 +11,10 @@ export function Hero() {
         alt="Phoenix Turkish Barber by Yusuf and the cafe at 493 Wimborne Road, Winton"
         fill
         priority
-        className="object-cover object-[50%_70%]"
+        className="object-cover object-[50%_12%]"
         sizes="100vw"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-ink-deep via-ink-deep/55 to-ink-deep/25" />
+      <div className="absolute inset-0 bg-gradient-to-t from-ink-deep via-ink-deep/50 to-transparent" />
       <div className="relative z-10 mx-auto flex min-h-[88vh] max-w-6xl flex-col justify-end px-5 py-16 md:px-8 md:py-20">
         <HoursPill dark />
         <p className="mt-6 font-script text-4xl text-gold-soft">Good Day</p>
