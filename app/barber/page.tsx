@@ -18,7 +18,8 @@ export default function BarberPage() {
         </h1>
         <p className="mt-4 max-w-2xl text-muted">
           WhatsApp Yusuf to hold a time. Walk-ins are welcome when a chair is
-          free. Local listings mark the barber as cash.
+          free. The cafe takes cash and card; ask at the chair if you want to
+          pay by card for a cut.
         </p>
       </div>
       <ChairBand />

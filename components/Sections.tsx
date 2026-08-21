@@ -57,9 +57,8 @@ export function DualStory() {
           <Eyebrow>Eat</Eyebrow>
           <h2 className="mt-2 font-display text-4xl">The cafe</h2>
           <p className="mt-3 text-muted">
-            Full English, garden plates with avocado, bagels, burgers and coffee
-            in the lime booths. Their line is simple: good food, good mood,
-            good day.
+            Full English, Turkish breakfast, baps, bagels, lasagna and coffee
+            in the lime booths. Cash and card at the counter.
           </p>
           <Link href="/menu" className="mt-5 inline-flex font-semibold text-teal">
             See what’s cooking →
@@ -144,17 +143,10 @@ export function BoardPrices() {
           <Eyebrow>On the yellow board</Eyebrow>
           <h2 className="mt-2 font-display text-4xl">Coffee and sweets</h2>
           <p className="mt-3 text-muted">
-            These prices are written on the board in their own photo. Iced
-            drinks are listed without a price — ask when you order.
+            {kitchen.intro} {kitchen.milkNote}
           </p>
           <ul className="mt-6">
-            {kitchen.drinks.map((item) => (
-              <li key={item.name} className="price-row">
-                <span>{item.name}</span>
-                <span className="font-semibold">{item.price ?? "Ask"}</span>
-              </li>
-            ))}
-            {kitchen.sweets.map((item) => (
+            {kitchen.drinks.slice(0, 8).map((item) => (
               <li key={item.name} className="price-row">
                 <span>{item.name}</span>
                 <span className="font-semibold">{item.price}</span>
@@ -228,7 +220,7 @@ export function HowItWorks() {
     {
       n: "3",
       title: "Ask if you’re unsure",
-      text: "Plate prices and today’s specials are on the board. The team will talk you through it.",
+      text: "Food prices are on the printed menu. Drinks are on the yellow board. The team will talk you through allergies.",
     },
   ];
 

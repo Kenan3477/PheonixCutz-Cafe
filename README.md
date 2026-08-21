@@ -11,7 +11,7 @@ Public website for the cafe and Turkish barber at **493 Wimborne Road, Winton, B
 - WhatsApp booking to 07902 852085 (Phoenix Turkish Barber By Yusuf)
 - 5/5 food hygiene rating (inspected 21 July 2026)
 
-Food plate prices are not invented. Ask the team for the day’s board.
+Food and drink prices are taken from their printed Phoenix Cafe menu and the yellow counter board.
 
 ## Run locally
 
