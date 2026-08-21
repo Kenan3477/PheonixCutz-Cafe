@@ -47,7 +47,51 @@ export const site = {
     { day: "Sunday", open: "10:00", close: "16:00" },
   ] as const,
   hoursNote:
-    "Hours taken from the Phoenix Turkish Barber listings for this address. Walk-ins are welcome; the chair can run a wait at peak times.",
+    "Hours from the Phoenix Turkish Barber listings for this address. Pop in for food; WhatsApp if you want a chair held.",
+  amenities: [
+    {
+      title: "Walk in for food",
+      detail: "Breakfast plates, burgers, bagels and coffee from the kitchen.",
+    },
+    {
+      title: "Book the chair",
+      detail: "WhatsApp Yusuf on 07902 852085. Walk-ins are taken when a chair is free.",
+    },
+    {
+      title: "Kids are welcome",
+      detail: "Kids’ cuts from £9, and the cafe is used to family tables.",
+    },
+    {
+      title: "Easy to reach",
+      detail: "493 Wimborne Road, Winton. Street parking. Bournemouth station is about two kilometres.",
+    },
+  ],
+  faqs: [
+    {
+      q: "Do I need to book?",
+      a: "Not for the cafe — walk in. For a haircut, walk-ins are fine, but WhatsApp is the surest way at busy times.",
+    },
+    {
+      q: "What are the hours?",
+      a: "Closed Monday. Tuesday–Friday 9:30–19:00, Saturday 9:30–18:00, Sunday 10:00–16:00.",
+    },
+    {
+      q: "Is it cash only?",
+      a: "Local barber listings mark the chair as cash. Ask at the counter for the cafe.",
+    },
+    {
+      q: "Is it good for children?",
+      a: "Yes. Kids’ haircuts are on the list, and the lime booths are used as a family cafe.",
+    },
+    {
+      q: "What about allergies or prices on the food?",
+      a: "Drink and tart prices on the menu page are from their yellow board. Plate prices change — ask the team, and tell them about allergies when you order.",
+    },
+    {
+      q: "What’s the hygiene rating?",
+      a: "5 out of 5 (very good), inspected 21 July 2026 by Bournemouth, Christchurch and Poole.",
+    },
+  ],
   companies: [
     {
       name: "Phoenix Cafe Services Ltd",
@@ -166,19 +210,18 @@ export const chair = {
 
 export const reviews = [
   {
-    quote:
-      "Yusuf listens, then cuts. Traditional Turkish work with a British finish — the shop feels like a living room with clippers.",
-    source: "Local listings, Winton",
+    quote: "Facebook page shows 100% recommend from the reviews left there.",
+    source: "Phoenix Turkish Baber on Facebook",
   },
   {
     quote:
-      "Kids are welcome in the chair. Walk-ins are fine; book ahead if you do not want to wait.",
+      "Locals praise Yusuf for listening first, then cutting — traditional Turkish work with a British finish.",
+    source: "Winton shop listings",
+  },
+  {
+    quote:
+      "Complimentary coffee in the chair, kids welcome, and the occasional wait at peak times.",
     source: "Customer notes on the Wimborne Road shop",
-  },
-  {
-    quote:
-      "100% recommend on their Facebook page. The house line is simple: feel the difference.",
-    source: "Phoenix Turkish Baber · Facebook",
   },
 ] as const;
 

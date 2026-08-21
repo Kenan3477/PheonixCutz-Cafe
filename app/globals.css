@@ -1,25 +1,31 @@
 @import "tailwindcss";
 
 :root {
-  --ink: #070706;
-  --ink-2: #12110e;
-  --gold: #c9a24a;
-  --gold-soft: #e8d5a3;
-  --teal: #4ec4d4;
-  --lime: #b6d84a;
-  --paper: #f3eee4;
-  --muted: #a39b8b;
+  --ink: #1a1712;
+  --ink-deep: #0e0c09;
+  --cream: #f6f1e6;
+  --cream-2: #ece4d4;
+  --paper: #fffcf6;
+  --gold: #b8892d;
+  --gold-soft: #d8b56a;
+  --teal: #2aa3b3;
+  --lime: #9cbc3a;
+  --muted: #6d6558;
+  --line: rgba(26, 23, 18, 0.1);
 }
 
 @theme inline {
   --color-ink: var(--ink);
-  --color-ink-2: var(--ink-2);
+  --color-ink-deep: var(--ink-deep);
+  --color-cream: var(--cream);
+  --color-cream-2: var(--cream-2);
+  --color-paper: var(--paper);
   --color-gold: var(--gold);
   --color-gold-soft: var(--gold-soft);
   --color-teal: var(--teal);
   --color-lime: var(--lime);
-  --color-paper: var(--paper);
   --color-muted: var(--muted);
+  --color-line: var(--line);
   --font-display: var(--font-display);
   --font-sans: var(--font-sans);
   --font-script: var(--font-script);
@@ -35,97 +41,92 @@ html {
 
 html,
 body {
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--cream);
+  color: var(--ink);
 }
 
 body {
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   min-height: 100%;
+  font-size: 1.05rem;
+  line-height: 1.6;
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--gold) 70%, black);
-  color: #fff8e8;
+  background: color-mix(in srgb, var(--gold) 45%, white);
+  color: var(--ink);
 }
 
 a {
   color: inherit;
 }
 
-.grain {
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  z-index: 40;
-  opacity: 0.09;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-.gold-rule {
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    color-mix(in srgb, var(--gold) 70%, transparent),
-    transparent
-  );
-}
-
-.menu-card {
-  background:
-    radial-gradient(1200px 400px at 20% 0%, rgba(201, 162, 74, 0.08), transparent 50%),
-    #0b0b09;
-  border: 1px solid color-mix(in srgb, var(--gold) 35%, transparent);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
-}
-
-.leaf-corner {
-  pointer-events: none;
-  position: absolute;
-  width: 92px;
-  height: 92px;
-  opacity: 0.7;
-}
-
-.reveal {
-  animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes ember {
-  0% {
-    transform: translate3d(0, 20px, 0) scale(0.6);
-    opacity: 0;
-  }
-  20% {
-    opacity: 0.8;
-  }
-  100% {
-    transform: translate3d(var(--drift), -110vh, 0) scale(1);
-    opacity: 0;
-  }
-}
-
-.ember {
-  position: absolute;
-  bottom: -10px;
-  width: 3px;
-  height: 3px;
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.85rem;
+  padding: 0.7rem 1.2rem;
   border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-gold {
   background: var(--gold);
-  animation: ember linear infinite;
+  color: #fffaf0;
+}
+
+.btn-ink {
+  background: var(--ink);
+  color: var(--cream);
+}
+
+.btn-ghost {
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.btn-ghost-dark {
+  border: 1px solid rgba(255, 252, 246, 0.2);
+  color: #fffaf0;
+}
+
+.card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 1.4rem;
+  box-shadow: 0 18px 40px rgba(26, 23, 18, 0.05);
+}
+
+.soft-section {
+  background: var(--cream);
+}
+
+.dark-section {
+  background: var(--ink-deep);
+  color: #f6f1e6;
+}
+
+.price-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px dashed color-mix(in srgb, var(--ink) 12%, transparent);
+}
+
+.dark-section .price-row {
+  border-bottom-color: rgba(246, 241, 230, 0.12);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -133,8 +134,7 @@ a {
     scroll-behavior: auto;
   }
 
-  .reveal,
-  .ember {
-    animation: none !important;
+  .btn:hover {
+    transform: none;
   }
 }

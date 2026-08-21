@@ -1,40 +1,30 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import { ChairBand } from "@/components/Sections";
 import { BookChair } from "@/components/BookChair";
-import { site } from "@/lib/site";
+import { ChairBand } from "@/components/Sections";
 
 export const metadata: Metadata = {
-  title: "Turkish Barber",
+  title: "Haircuts and prices",
   description:
     "Phoenix Turkish Barber price list at 493 Wimborne Road, Winton. Haircuts, wet shaves, kids cuts and the Phoenix Special.",
 };
 
 export default function BarberPage() {
   return (
-    <div className="pt-24">
-      <section className="relative isolate min-h-[52vh] overflow-hidden">
-        <Image
-          src="/images/real/godaddy-hero.jpg"
-          alt="Phoenix Turkish Barber crossed-shears emblem"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-ink/70" />
-        <div className="relative mx-auto flex min-h-[52vh] max-w-7xl flex-col justify-end px-5 pb-14 md:px-8">
-          <p className="font-script text-4xl text-gold-soft">{site.feel}</p>
-          <h1 className="mt-2 font-display text-6xl uppercase md:text-8xl">
-            The chair
-          </h1>
-          <p className="mt-4 max-w-xl text-gold-soft">
-            WhatsApp Yusuf to hold a time. Walk-ins welcome. Cash is listed as
-            the usual payment on local barber directories.
-          </p>
-        </div>
-      </section>
+    <div>
+      <div className="mx-auto max-w-6xl px-5 py-10 md:px-8">
+        <p className="text-sm font-semibold text-teal">Cut</p>
+        <h1 className="mt-2 font-display text-5xl md:text-6xl">
+          Turkish barber prices
+        </h1>
+        <p className="mt-4 max-w-2xl text-muted">
+          WhatsApp Yusuf to hold a time. Walk-ins are welcome when a chair is
+          free. Local listings mark the barber as cash.
+        </p>
+      </div>
       <ChairBand />
-      <BookChair />
+      <div className="bg-cream py-8">
+        <BookChair />
+      </div>
     </div>
   );
 }

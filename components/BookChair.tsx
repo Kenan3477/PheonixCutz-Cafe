@@ -28,23 +28,25 @@ export function BookChair() {
   }
 
   return (
-    <section className="px-5 pb-24 md:px-8">
+    <section className="px-5 pb-16 md:px-8">
       <form
         onSubmit={onSubmit}
-        className="menu-card mx-auto grid max-w-3xl gap-5 p-8 md:grid-cols-2"
+        className="card mx-auto grid max-w-3xl gap-5 p-7 md:grid-cols-2"
       >
         <div className="md:col-span-2">
-          <p className="text-[0.72rem] tracking-[0.28em] text-gold uppercase">
-            WhatsApp the chair
+          <p className="text-sm font-semibold text-teal">WhatsApp the chair</p>
+          <h2 className="mt-1 font-display text-4xl">Hold a time</h2>
+          <p className="mt-2 text-muted">
+            This opens WhatsApp with your request filled in. Nothing is stored
+            on the website.
           </p>
-          <h2 className="mt-2 font-display text-4xl">Hold a time</h2>
         </div>
         <label className="block text-sm">
           <span className="text-muted">Your name</span>
           <input
             value={name}
             onChange={(event) => setName(event.target.value)}
-            className="mt-2 w-full rounded-xl border border-gold/20 bg-black/40 px-4 py-3 text-paper outline-none ring-gold/40 focus:ring"
+            className="mt-2 w-full rounded-xl border border-line bg-cream px-4 py-3 text-ink outline-none ring-gold/30 focus:ring"
             placeholder="First name"
           />
         </label>
@@ -53,7 +55,7 @@ export function BookChair() {
           <input
             value={when}
             onChange={(event) => setWhen(event.target.value)}
-            className="mt-2 w-full rounded-xl border border-gold/20 bg-black/40 px-4 py-3 text-paper outline-none ring-gold/40 focus:ring"
+            className="mt-2 w-full rounded-xl border border-line bg-cream px-4 py-3 text-ink outline-none ring-gold/30 focus:ring"
             placeholder="Saturday after 11"
           />
         </label>
@@ -62,7 +64,7 @@ export function BookChair() {
           <select
             value={service}
             onChange={(event) => setService(event.target.value)}
-            className="mt-2 w-full rounded-xl border border-gold/20 bg-black/40 px-4 py-3 text-paper outline-none"
+            className="mt-2 w-full rounded-xl border border-line bg-cream px-4 py-3 text-ink outline-none"
           >
             {services.map((item) => (
               <option key={item} value={item}>
@@ -71,10 +73,7 @@ export function BookChair() {
             ))}
           </select>
         </label>
-        <button
-          type="submit"
-          className="rounded-full bg-gold px-6 py-3 text-sm font-semibold tracking-[0.16em] text-ink uppercase md:col-span-2"
-        >
+        <button type="submit" className="btn btn-gold md:col-span-2">
           Open WhatsApp
         </button>
       </form>

@@ -3,7 +3,13 @@
 import { useEffect, useState } from "react";
 import { getOpenState } from "@/lib/hours";
 
-export function HoursPill({ className = "" }: { className?: string }) {
+export function HoursPill({
+  className = "",
+  dark = false,
+}: {
+  className?: string;
+  dark?: boolean;
+}) {
   const [state, setState] = useState<ReturnType<typeof getOpenState> | null>(
     null,
   );
@@ -15,33 +21,31 @@ export function HoursPill({ className = "" }: { className?: string }) {
     return () => window.clearInterval(id);
   }, []);
 
+  const base = dark
+    ? "border-white/15 bg-white/5 text-cream"
+    : "border-line bg-paper text-ink";
+
   if (!state) {
     return (
       <span
-        className={`inline-flex items-center gap-2 rounded-full border border-gold/25 px-3 py-1 text-[0.7rem] tracking-[0.16em] uppercase text-gold-soft ${className}`}
+        className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm ${base} ${className}`}
       >
-        Winton hours
+        Checking hours…
       </span>
     );
   }
 
   return (
     <span
-      className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[0.7rem] tracking-[0.16em] uppercase ${
-        state.open
-          ? "border-lime/40 text-lime"
-          : "border-gold/25 text-gold-soft"
-      } ${className}`}
+      className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm ${base} ${className}`}
     >
       <span
-        className={`size-1.5 rounded-full ${
-          state.open ? "bg-lime shadow-[0_0_10px_#b6d84a]" : "bg-gold/70"
+        className={`size-2 rounded-full ${
+          state.open ? "bg-lime" : dark ? "bg-gold-soft" : "bg-gold"
         }`}
       />
-      {state.label}
-      <span className="hidden text-muted normal-case tracking-normal sm:inline">
-        · {state.detail}
-      </span>
+      <strong className="font-semibold">{state.label}</strong>
+      <span className={dark ? "text-cream/70" : "text-muted"}>{state.detail}</span>
     </span>
   );
 }

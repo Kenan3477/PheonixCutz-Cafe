@@ -1,92 +1,123 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Eyebrow, LeafCorners, LogoMark } from "@/components/Brand";
-import { chair, gallery, kitchen, reviews, site } from "@/lib/site";
+import { Eyebrow } from "@/components/Brand";
+import { chair, kitchen, reviews, site, whatsappHref } from "@/lib/site";
+
+export function QuickFacts() {
+  return (
+    <section className="mx-auto max-w-6xl px-5 pb-6 md:px-8">
+      <div className="grid gap-3 rounded-[1.6rem] border border-line bg-paper p-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Fact label="Hygiene" value={`5/5 · ${site.hygiene.label}`} href={site.hygiene.url} />
+        <Fact label="Closed" value="Mondays" />
+        <Fact label="Coffee loyalty" value="Buy 6, 7th free" />
+        <Fact label="Haircut from" value="£14 · kids £9" href="/barber" />
+      </div>
+    </section>
+  );
+}
+
+function Fact({
+  label,
+  value,
+  href,
+}: {
+  label: string;
+  value: string;
+  href?: string;
+}) {
+  const inner = (
+    <>
+      <p className="text-sm text-muted">{label}</p>
+      <p className="font-semibold">{value}</p>
+    </>
+  );
+  return href ? (
+    <a href={href} className="rounded-xl px-3 py-2 hover:bg-cream">
+      {inner}
+    </a>
+  ) : (
+    <div className="px-3 py-2">{inner}</div>
+  );
+}
 
 export function DualStory() {
   return (
-    <section className="mx-auto max-w-7xl px-5 py-24 md:px-8">
-      <div className="grid gap-6 lg:grid-cols-2">
-        <article className="menu-card relative overflow-hidden p-8 md:p-12">
-          <LeafCorners />
-          <Eyebrow>The kitchen</Eyebrow>
-          <h2 className="mt-4 font-display text-5xl text-paper">Phoenix Cafe</h2>
-          <p className="mt-5 max-w-md text-sm leading-7 text-gold-soft">
-            Black menus, gold leaf, lime booths. Full English plates with beans
-            in glass ramekins, garden breakfasts with avocado, bagels, burgers,
-            and a yellow loyalty card on the coffee counter.
-          </p>
-          <p className="mt-4 font-script text-3xl text-gold">{site.coffeeLine}</p>
-          <Link
-            href="/menu"
-            className="mt-8 inline-flex text-xs tracking-[0.22em] text-gold uppercase"
-          >
-            Open the kitchen menu →
-          </Link>
-        </article>
-        <article className="relative overflow-hidden rounded-[1.6rem] bg-ink-2">
+    <section className="mx-auto grid max-w-6xl gap-5 px-5 py-10 md:px-8 lg:grid-cols-2">
+      <article className="card overflow-hidden">
+        <div className="relative h-64">
           <Image
-            src="/images/real/godaddy-hero.jpg"
-            alt="Phoenix Turkish Barber emblem — crossed shears and a phoenix"
+            src="/images/real/interior-lime-green-booth-burger.jpg"
+            alt="Lime green booth and a house burger at Phoenix Cafe"
             fill
             className="object-cover"
             sizes="(min-width: 1024px) 50vw, 100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-ink/10" />
-          <div className="relative flex min-h-[420px] flex-col justify-end p-8 md:p-12">
-            <Eyebrow>The chair</Eyebrow>
-            <h2 className="mt-4 font-display text-5xl text-paper">
-              Turkish Barber
-            </h2>
-            <p className="mt-5 max-w-md text-sm leading-7 text-gold-soft">
-              Yusuf’s house since 2022. Skin fades, wet shaves, kids’ cuts, and
-              the Phoenix Special — hot wax, ear flame, hot towel, face mask.
-            </p>
-            <p className="mt-4 font-script text-3xl text-gold">{site.feel}</p>
-            <Link
-              href="/barber"
-              className="mt-8 inline-flex text-xs tracking-[0.22em] text-gold uppercase"
-            >
-              See the chair list →
-            </Link>
-          </div>
-        </article>
-      </div>
+        </div>
+        <div className="p-7">
+          <Eyebrow>Eat</Eyebrow>
+          <h2 className="mt-2 font-display text-4xl">The cafe</h2>
+          <p className="mt-3 text-muted">
+            Full English, garden plates with avocado, bagels, burgers and coffee
+            in the lime booths. Their line is simple: good food, good mood,
+            good day.
+          </p>
+          <Link href="/menu" className="mt-5 inline-flex font-semibold text-teal">
+            See what’s cooking →
+          </Link>
+        </div>
+      </article>
+      <article className="card overflow-hidden">
+        <div className="relative h-64 bg-ink-deep">
+          <Image
+            src="/images/real/godaddy-hero.jpg"
+            alt="Phoenix Turkish Barber crossed-shears emblem"
+            fill
+            className="object-cover"
+            sizes="(min-width: 1024px) 50vw, 100vw"
+          />
+        </div>
+        <div className="p-7">
+          <Eyebrow>Cut</Eyebrow>
+          <h2 className="mt-2 font-display text-4xl">The barber</h2>
+          <p className="mt-3 text-muted">
+            Yusuf’s Turkish barber: skin fades, wet shaves, kids’ cuts, and the
+            Phoenix Special with hot towel and face mask. Coffee while you wait.
+          </p>
+          <Link href="/barber" className="mt-5 inline-flex font-semibold text-teal">
+            See prices and book →
+          </Link>
+        </div>
+      </article>
     </section>
   );
 }
 
 export function KitchenBand() {
   return (
-    <section id="kitchen" className="px-5 py-8 md:px-8">
-      <div className="mx-auto max-w-7xl">
-        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <div>
-            <Eyebrow>From their Instagram</Eyebrow>
-            <h2 className="mt-3 font-display text-5xl md:text-6xl">
-              Plates from the house
-            </h2>
-          </div>
-          <p className="max-w-md text-sm leading-7 text-muted">{kitchen.intro}</p>
+    <section id="kitchen" className="px-5 py-14 md:px-8">
+      <div className="mx-auto max-w-6xl">
+        <div className="max-w-2xl">
+          <Eyebrow>From the kitchen</Eyebrow>
+          <h2 className="mt-2 font-display text-5xl">What they actually serve</h2>
+          <p className="mt-4 text-muted">{kitchen.intro}</p>
         </div>
-        <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {kitchen.plates.map((plate) => (
-            <figure
-              key={plate.name}
-              className="group overflow-hidden rounded-[1.4rem] bg-ink-2"
-            >
-              <div className="relative aspect-[4/5] overflow-hidden">
+            <figure key={plate.name} className="card overflow-hidden">
+              <div className="relative aspect-[4/5]">
                 <Image
                   src={plate.photo}
                   alt={plate.blurb}
                   fill
-                  className="object-cover transition duration-700 group-hover:scale-105"
+                  className="object-cover"
                   sizes="(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 100vw"
                 />
               </div>
-              <figcaption className="p-6">
-                <h3 className="font-display text-2xl text-paper">{plate.name}</h3>
-                <p className="mt-2 text-sm leading-6 text-muted">{plate.blurb}</p>
+              <figcaption className="p-5">
+                <h3 className="font-display text-2xl">{plate.name}</h3>
+                <p className="mt-2 text-[0.95rem] leading-6 text-muted">
+                  {plate.blurb}
+                </p>
               </figcaption>
             </figure>
           ))}
@@ -98,46 +129,42 @@ export function KitchenBand() {
 
 export function BoardPrices() {
   return (
-    <section className="mx-auto grid max-w-7xl gap-8 px-5 py-20 md:grid-cols-[1.1fr_0.9fr] md:px-8">
-      <div className="relative overflow-hidden rounded-[1.6rem]">
-        <Image
-          src="/images/real/coffee-latte-counter.jpg"
-          alt="Latte, loyalty card and the yellow drinks board at Phoenix Cafe"
-          width={1403}
-          height={1753}
-          className="h-full w-full object-cover"
-        />
-      </div>
-      <div className="menu-card relative p-8 md:p-10">
-        <LeafCorners />
-        <Eyebrow>On the yellow board</Eyebrow>
-        <h2 className="mt-3 font-display text-4xl">Coffee & sweets</h2>
-        <p className="mt-4 text-sm leading-7 text-muted">
-          Read from the counter menu in their own photo — not guessed.
-        </p>
-        <ul className="mt-8 space-y-3">
-          {kitchen.drinks.map((item) => (
-            <li
-              key={item.name}
-              className="flex items-baseline justify-between gap-4 border-b border-gold/15 pb-3"
-            >
-              <span className="text-paper">{item.name}</span>
-              <span className="text-gold">{item.price ?? "Ask"}</span>
-            </li>
-          ))}
-          {kitchen.sweets.map((item) => (
-            <li
-              key={item.name}
-              className="flex items-baseline justify-between gap-4 border-b border-gold/15 pb-3"
-            >
-              <span className="text-paper">{item.name}</span>
-              <span className="text-gold">{item.price}</span>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-8 rounded-2xl border border-gold/20 px-4 py-3 text-sm text-gold-soft">
-          Loyalty: {kitchen.loyalty}
-        </p>
+    <section className="px-5 pb-16 md:px-8">
+      <div className="mx-auto grid max-w-6xl overflow-hidden rounded-[1.8rem] border border-line bg-paper lg:grid-cols-2">
+        <div className="relative min-h-[360px]">
+          <Image
+            src="/images/real/coffee-latte-counter.jpg"
+            alt="Latte, loyalty card and the yellow drinks board at Phoenix Cafe"
+            fill
+            className="object-cover"
+            sizes="(min-width: 1024px) 50vw, 100vw"
+          />
+        </div>
+        <div className="p-7 md:p-10">
+          <Eyebrow>On the yellow board</Eyebrow>
+          <h2 className="mt-2 font-display text-4xl">Coffee and sweets</h2>
+          <p className="mt-3 text-muted">
+            These prices are written on the board in their own photo. Iced
+            drinks are listed without a price — ask when you order.
+          </p>
+          <ul className="mt-6">
+            {kitchen.drinks.map((item) => (
+              <li key={item.name} className="price-row">
+                <span>{item.name}</span>
+                <span className="font-semibold">{item.price ?? "Ask"}</span>
+              </li>
+            ))}
+            {kitchen.sweets.map((item) => (
+              <li key={item.name} className="price-row">
+                <span>{item.name}</span>
+                <span className="font-semibold">{item.price}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-6 rounded-2xl bg-cream px-4 py-3 text-sm">
+            Loyalty card: {kitchen.loyalty}
+          </p>
+        </div>
       </div>
     </section>
   );
@@ -145,76 +172,95 @@ export function BoardPrices() {
 
 export function ChairBand() {
   return (
-    <section className="bg-black/40 px-5 py-24 md:px-8">
-      <div className="mx-auto max-w-7xl">
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div>
-            <Eyebrow>Phoenix Turkish Barber</Eyebrow>
-            <h2 className="mt-3 font-display text-5xl md:text-6xl">
-              Feel the difference
-            </h2>
-          </div>
-          <p className="max-w-md text-sm leading-7 text-muted">{chair.intro}</p>
+    <section className="dark-section px-5 py-16 md:px-8">
+      <div className="mx-auto max-w-6xl">
+        <div className="max-w-2xl">
+          <Eyebrow light>Phoenix Turkish Barber</Eyebrow>
+          <h2 className="mt-2 font-display text-5xl text-cream">
+            Honest prices for the chair
+          </h2>
+          <p className="mt-4 text-cream/70">{chair.intro}</p>
         </div>
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
+        <div className="mt-10 grid gap-5 md:grid-cols-2">
           {chair.groups.map((group) => (
-            <div key={group.title} className="menu-card relative p-7">
-              <LeafCorners />
-              <h3 className="font-display text-3xl text-gold">{group.title}</h3>
-              <ul className="mt-6 space-y-3">
+            <div
+              key={group.title}
+              className="rounded-[1.4rem] border border-white/10 bg-white/5 p-6"
+            >
+              <h3 className="font-display text-3xl text-gold-soft">{group.title}</h3>
+              <ul className="mt-4">
                 {group.items.map((item) => (
-                  <li
-                    key={item.name}
-                    className="flex items-baseline justify-between gap-6 text-sm"
-                  >
-                    <span className="text-paper">{item.name}</span>
-                    <span className="font-medium tracking-wide text-gold">
-                      {item.price}
-                    </span>
+                  <li key={item.name} className="price-row text-[0.95rem]">
+                    <span>{item.name}</span>
+                    <span className="font-semibold text-gold-soft">{item.price}</span>
                   </li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
-        <p className="mt-8 text-sm leading-7 text-gold-soft">{chair.specialNote}</p>
+        <p className="mt-8 max-w-3xl text-sm leading-7 text-cream/70">
+          {chair.specialNote}
+        </p>
+        <a
+          href={whatsappHref("Hi Yusuf — I’d like to book a haircut.")}
+          className="btn btn-gold mt-6"
+        >
+          WhatsApp to book
+        </a>
       </div>
     </section>
   );
 }
 
-export function GalleryBand() {
+export function HowItWorks() {
+  const steps = [
+    {
+      n: "1",
+      title: "Come down Wimborne Road",
+      text: "493, in Winton. Street parking. Closed Mondays.",
+    },
+    {
+      n: "2",
+      title: "Eat, or take a chair",
+      text: "Walk in for food and coffee. For a cut, WhatsApp or wait for the next chair.",
+    },
+    {
+      n: "3",
+      title: "Ask if you’re unsure",
+      text: "Plate prices and today’s specials are on the board. The team will talk you through it.",
+    },
+  ];
+
   return (
-    <section className="px-5 py-24 md:px-8">
-      <div className="mx-auto max-w-7xl">
-        <div className="flex items-end justify-between gap-6">
-          <div>
-            <Eyebrow>Their camera</Eyebrow>
-            <h2 className="mt-3 font-display text-5xl">From the house feed</h2>
-          </div>
-          <a
-            href={site.instagram}
-            className="hidden text-xs tracking-[0.2em] text-gold uppercase sm:inline"
-          >
-            {site.instagramHandle}
-          </a>
-        </div>
-        <div className="mt-12 columns-1 gap-4 md:columns-2">
-          {gallery.map((shot) => (
-            <figure
-              key={shot.src}
-              className="mb-4 break-inside-avoid overflow-hidden rounded-[1.3rem]"
-            >
-              <Image
-                src={shot.src}
-                alt={shot.alt}
-                width={"wide" in shot && shot.wide ? 1600 : 1200}
-                height={"wide" in shot && shot.wide ? 2000 : 1500}
-                className="h-auto w-full object-cover"
-              />
-            </figure>
+    <section className="px-5 py-16 md:px-8">
+      <div className="mx-auto max-w-6xl">
+        <Eyebrow>A simple visit</Eyebrow>
+        <h2 className="mt-2 font-display text-5xl">How it works</h2>
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
+          {steps.map((step) => (
+            <div key={step.n} className="card p-6">
+              <p className="font-display text-3xl text-gold">{step.n}</p>
+              <h3 className="mt-3 text-xl font-semibold">{step.title}</h3>
+              <p className="mt-2 text-muted">{step.text}</p>
+            </div>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+export function AmenitiesBand() {
+  return (
+    <section className="px-5 pb-6 md:px-8">
+      <div className="mx-auto grid max-w-6xl gap-4 md:grid-cols-2">
+        {site.amenities.map((item) => (
+          <div key={item.title} className="card p-6">
+            <h3 className="text-xl font-semibold">{item.title}</h3>
+            <p className="mt-2 text-muted">{item.detail}</p>
+          </div>
+        ))}
       </div>
     </section>
   );
@@ -222,22 +268,42 @@ export function GalleryBand() {
 
 export function ReviewsBand() {
   return (
-    <section className="px-5 py-16 md:px-8">
-      <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">
-        {reviews.map((review) => (
-          <blockquote
-            key={review.quote}
-            className="menu-card relative p-7"
-          >
-            <LeafCorners />
-            <p className="font-display text-2xl leading-snug text-paper">
-              “{review.quote}”
-            </p>
-            <footer className="mt-6 text-xs tracking-[0.18em] text-gold uppercase">
-              {review.source}
-            </footer>
-          </blockquote>
-        ))}
+    <section className="px-5 py-12 md:px-8">
+      <div className="mx-auto max-w-6xl">
+        <Eyebrow>What people say</Eyebrow>
+        <h2 className="mt-2 font-display text-4xl">From local listings</h2>
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
+          {reviews.map((review) => (
+            <blockquote key={review.quote} className="card p-6">
+              <p className="text-[1.05rem] leading-7">{review.quote}</p>
+              <footer className="mt-4 text-sm text-muted">{review.source}</footer>
+            </blockquote>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function FaqBand() {
+  return (
+    <section className="px-5 py-12 md:px-8">
+      <div className="mx-auto max-w-6xl">
+        <Eyebrow>Good to know</Eyebrow>
+        <h2 className="mt-2 font-display text-4xl">Common questions</h2>
+        <div className="mt-8 divide-y divide-line rounded-[1.6rem] border border-line bg-paper">
+          {site.faqs.map((item) => (
+            <details key={item.q} className="group px-6 py-5">
+              <summary className="cursor-pointer list-none text-lg font-semibold marker:content-none">
+                <span className="flex items-center justify-between gap-4">
+                  {item.q}
+                  <span className="text-gold group-open:rotate-45">+</span>
+                </span>
+              </summary>
+              <p className="mt-3 max-w-3xl text-muted">{item.a}</p>
+            </details>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -245,83 +311,45 @@ export function ReviewsBand() {
 
 export function VisitBand() {
   return (
-    <section className="px-5 py-24 md:px-8">
-      <div className="mx-auto grid max-w-7xl overflow-hidden rounded-[1.8rem] border border-gold/20 lg:grid-cols-2">
-        <div className="bg-ink-2 p-8 md:p-12">
-          <LogoMark size={72} />
-          <div className="mt-8">
-            <Eyebrow>Find the house</Eyebrow>
-          </div>
-          <h2 className="mt-3 font-display text-5xl">Wimborne Road, Winton</h2>
-          <p className="mt-4 text-gold-soft">{site.address.display}</p>
-          <p className="mt-2 text-sm text-muted">
-            what3words · {site.address.what3words}
-          </p>
-          <dl className="mt-8 space-y-2 text-sm">
+    <section className="px-5 py-14 md:px-8">
+      <div className="mx-auto grid max-w-6xl overflow-hidden rounded-[1.8rem] border border-line bg-paper lg:grid-cols-2">
+        <div className="p-7 md:p-10">
+          <Eyebrow>Visit</Eyebrow>
+          <h2 className="mt-2 font-display text-4xl">Wimborne Road, Winton</h2>
+          <p className="mt-3 text-lg">{site.address.display}</p>
+          <p className="mt-1 text-sm text-muted">what3words · {site.address.what3words}</p>
+          <dl className="mt-8">
             {site.hours.map((row) => (
-              <div
-                key={row.day}
-                className="flex justify-between border-b border-white/5 py-2"
-              >
+              <div key={row.day} className="price-row text-[0.95rem]">
                 <dt>{row.day}</dt>
-                <dd className="text-gold">
-                  {row.open && row.close ? `${row.open} – ${row.close}` : "Closed"}
+                <dd className="font-semibold">
+                  {row.open && row.close ? `${row.open}–${row.close}` : "Closed"}
                 </dd>
               </div>
             ))}
           </dl>
-          <p className="mt-6 text-xs leading-6 text-muted">{site.hoursNote}</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a
-              href={site.address.mapsUrl}
-              className="rounded-full bg-gold px-5 py-2 text-xs font-semibold tracking-[0.16em] text-ink uppercase"
-            >
-              Directions
+          <p className="mt-5 text-sm text-muted">{site.hoursNote}</p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a href={site.address.mapsUrl} className="btn btn-ink">
+              Open in Maps
             </a>
-            <a
-              href={`tel:${site.phoneTel}`}
-              className="rounded-full border border-gold/40 px-5 py-2 text-xs tracking-[0.16em] text-gold uppercase"
-            >
-              {site.phoneDisplay}
+            <a href={`tel:${site.phoneTel}`} className="btn btn-ghost">
+              Call {site.phoneDisplay}
             </a>
           </div>
-          <p className="mt-8 text-sm text-gold-soft">
-            Food hygiene {site.hygiene.rating}/5 · {site.hygiene.label} · inspected{" "}
-            {site.hygiene.inspected}
+          <p className="mt-6 text-sm">
+            Food hygiene {site.hygiene.rating}/5 · inspected {site.hygiene.inspected}
           </p>
         </div>
-        <div className="min-h-[420px] bg-black">
+        <div className="min-h-[420px] bg-cream-2">
           <iframe
             title="Map of Phoenix Cutz & Cafe on Wimborne Road"
             src={site.address.embedUrl}
-            className="h-full min-h-[420px] w-full border-0 grayscale contrast-125"
+            className="h-full min-h-[420px] w-full border-0"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
           />
         </div>
-      </div>
-    </section>
-  );
-}
-
-export function WelcomeCard() {
-  return (
-    <section className="px-5 py-10 md:px-8">
-      <div className="menu-card relative mx-auto max-w-xl px-8 py-16 text-center">
-        <LeafCorners />
-        <p className="font-script text-3xl text-paper">{site.scriptLine}</p>
-        <LogoMark size={88} className="mx-auto mt-4" />
-        <p className="mt-3 font-script text-2xl text-paper">{site.coffeeLine}</p>
-        <p className="mt-8 font-display text-6xl text-gold">Menu</p>
-        <p className="mt-6 text-sm tracking-[0.28em] text-gold uppercase">
-          Welcome!
-        </p>
-        <p className="mt-3 text-xs tracking-[0.22em] text-gold-soft uppercase">
-          {site.welcome}
-        </p>
-        <p className="mt-10 text-[0.7rem] tracking-[0.32em] text-gold uppercase">
-          Phoenix Cafe
-        </p>
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Great_Vibes, Outfit } from "next/font/google";
-import { Footer, Header } from "@/components/Chrome";
+import { Footer, Header, MobileDock } from "@/components/Chrome";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -97,21 +97,21 @@ export default function RootLayout({
       lang="en-GB"
       className={`${outfit.variable} ${display.variable} ${script.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-ink font-sans text-paper">
+      <body className="min-h-full bg-cream font-sans text-ink">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <div className="grain" />
         <a
           href="#kitchen"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:bg-gold focus:px-3 focus:py-2 focus:text-ink"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:bg-gold focus:px-3 focus:py-2 focus:text-paper"
         >
-          Skip to kitchen
+          Skip to food
         </a>
         <Header />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 pb-20 md:pb-0">{children}</main>
         <Footer />
+        <MobileDock />
       </body>
     </html>
   );

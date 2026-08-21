@@ -1,26 +1,30 @@
 import { Hero } from "@/components/Hero";
 import {
+  AmenitiesBand,
   BoardPrices,
   ChairBand,
   DualStory,
-  GalleryBand,
+  FaqBand,
+  HowItWorks,
   KitchenBand,
+  QuickFacts,
   ReviewsBand,
   VisitBand,
-  WelcomeCard,
 } from "@/components/Sections";
 
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <WelcomeCard />
+      <QuickFacts />
       <DualStory />
       <KitchenBand />
       <BoardPrices />
       <ChairBand />
-      <GalleryBand />
+      <HowItWorks />
+      <AmenitiesBand />
       <ReviewsBand />
+      <FaqBand />
       <VisitBand />
     </>
   );
