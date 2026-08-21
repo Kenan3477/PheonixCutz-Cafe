@@ -19,8 +19,10 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-cream/90 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 md:px-8">
-        <Wordmark compact />
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 py-3 md:px-8">
+        <div className="min-w-0 shrink">
+          <Wordmark compact />
+        </div>
         <nav className="hidden items-center gap-8 text-[0.95rem] text-ink/80 md:flex">
           {links.map((link) => (
             <Link
@@ -36,7 +38,7 @@ export function Header() {
             </Link>
           ))}
         </nav>
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-3">
           <HoursPill className="hidden lg:inline-flex" />
           <a
             href={whatsappHref("Hi Phoenix — can I book a haircut?")}

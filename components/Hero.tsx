@@ -16,7 +16,7 @@ export function Hero() {
       />
       <div className="absolute inset-0 bg-gradient-to-t from-ink-deep via-ink-deep/50 to-transparent" />
       <div className="relative z-10 mx-auto flex min-h-[88vh] max-w-6xl flex-col justify-end px-5 py-16 md:px-8 md:py-20">
-        <HoursPill dark />
+        <HoursPill dark className="inline-flex max-w-[min(100%,22rem)]" />
         <p className="mt-6 font-script text-4xl text-gold-soft">Good Day</p>
         <h1 className="mt-1 max-w-3xl font-display text-5xl leading-[0.95] md:text-7xl">
           Cafe and Turkish barber in Winton

@@ -36,7 +36,7 @@ export function EatMenu() {
           </h1>
           <p className="mt-5 max-w-xl text-cream/80">{kitchen.intro}</p>
           <div className="mt-6">
-            <HoursPill dark />
+            <HoursPill dark className="inline-flex max-w-[min(100%,22rem)]" />
           </div>
           <p className="mt-6 text-sm text-cream/60">
             Hygiene{" "}

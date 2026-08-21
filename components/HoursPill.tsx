@@ -28,7 +28,7 @@ export function HoursPill({
   if (!state) {
     return (
       <span
-        className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm ${base} ${className}`}
+        className={`items-center gap-2 rounded-full border px-3 py-1.5 text-sm ${base} ${className || "inline-flex"}`}
       >
         Checking hours…
       </span>
@@ -37,15 +37,17 @@ export function HoursPill({
 
   return (
     <span
-      className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm ${base} ${className}`}
+      className={`max-w-full items-center gap-2 rounded-full border px-3 py-1.5 text-sm ${base} ${className || "inline-flex"}`}
     >
       <span
-        className={`size-2 rounded-full ${
+        className={`size-2 shrink-0 rounded-full ${
           state.open ? "bg-lime" : dark ? "bg-gold-soft" : "bg-gold"
         }`}
       />
       <strong className="font-semibold">{state.label}</strong>
-      <span className={dark ? "text-cream/70" : "text-muted"}>{state.detail}</span>
+      <span className={`truncate ${dark ? "text-cream/70" : "text-muted"}`}>
+        {state.detail}
+      </span>
     </span>
   );
 }
