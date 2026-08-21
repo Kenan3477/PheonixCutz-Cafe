@@ -24,11 +24,11 @@ Then open [http://localhost:3000](http://localhost:3000).
 
 ## Live
 
-Open this exact address: [https://pheonix-cutz-cafe.vercel.app](https://pheonix-cutz-cafe.vercel.app)
+[https://phoenix-cutz-cafe.vercel.app](https://phoenix-cutz-cafe.vercel.app)
 
-The Vercel project name keeps the repo spelling **pheonix** (E after PH). Phones often autocorrect that to **phoenix**, which is a different address and shows Vercel’s “not found” page. If Safari still shows an old 404, open the link in a Private tab.
+The shop is **Phoenix**. The Vercel project must use that spelling so phones do not land on a “not found” host. Rename the project in Vercel from `pheonix-cutz-cafe` to `phoenix-cutz-cafe` (Settings → General → Project Name). Production then deploys from `main` at the Phoenix address.
 
-Vercel deploys from `main` (production) and from pull requests (preview).
+The GitHub repo can keep its original name.
 
 ## Stack
 
