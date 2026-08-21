@@ -1,6 +1,6 @@
 export const site = {
   name: "Phoenix Cutz & Cafe",
-  url: "https://phoenix-cutz-cafe.vercel.app",
+  url: "https://phoenix-cutz-cafe.app",
   shortName: "Phoenix Cafe",
   tagline: "Good food. Good mood. Good day.",
   scriptLine: "Good Day",

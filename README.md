@@ -24,11 +24,17 @@ Then open [http://localhost:3000](http://localhost:3000).
 
 ## Live
 
-[https://phoenix-cutz-cafe.vercel.app](https://phoenix-cutz-cafe.vercel.app)
+[https://phoenix-cutz-cafe.app](https://phoenix-cutz-cafe.app)
 
-The shop is **Phoenix**. The Vercel project must use that spelling so phones do not land on a “not found” host. Rename the project in Vercel from `pheonix-cutz-cafe` to `phoenix-cutz-cafe` (Settings → General → Project Name). Production then deploys from `main` at the Phoenix address.
+Buy that domain (Vercel Domains is simplest) and leave it attached to the `pheonix-cutz-cafe` project. Until DNS is valid, Vercel shows **Invalid Configuration**. After purchase, Vercel can set the records itself.
 
-The GitHub repo can keep its original name.
+If the domain was bought elsewhere, add this apex record at the registrar:
+
+| Type | Name | Value |
+| --- | --- | --- |
+| A | `@` | `216.198.79.1` |
+
+Also add `www` as a CNAME to `cname.vercel-dns.com` if you want the www address. The GitHub repo can keep its original name.
 
 ## Stack
 
