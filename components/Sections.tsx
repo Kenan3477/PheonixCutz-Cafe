@@ -370,7 +370,7 @@ export function VisitBand() {
               src="/images/real/shop-front.jpg"
               alt="The shop front at 493 Wimborne Road"
               fill
-              className="object-cover"
+              className="object-cover object-[50%_12%]"
               sizes="(min-width: 1024px) 50vw, 100vw"
             />
           </div>
