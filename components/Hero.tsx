@@ -7,11 +7,11 @@ export function Hero() {
   return (
     <section className="relative isolate min-h-[88vh] overflow-hidden bg-ink-deep text-cream">
       <Image
-        src="/images/real/interior-lime-green-booth-burger.jpg"
-        alt="Inside Phoenix Cutz & Cafe on Wimborne Road — lime booths, warm lights and the kitchen"
+        src="/images/real/shop-front.jpg"
+        alt="Phoenix Turkish Barber by Yusuf and the cafe at 493 Wimborne Road, Winton"
         fill
         priority
-        className="object-cover object-[50%_40%]"
+        className="object-cover object-[50%_70%]"
         sizes="100vw"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-ink-deep via-ink-deep/55 to-ink-deep/25" />

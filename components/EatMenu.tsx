@@ -21,8 +21,8 @@ export function EatMenu() {
     <div>
       <section className="relative isolate min-h-[70vh] overflow-hidden bg-ink-deep text-cream">
         <Image
-          src="/images/real/breakfast-full-english-mushrooms.jpg"
-          alt="Full English at Phoenix Cafe with the black and gold welcome menu"
+          src="/images/real/interior-from-door.jpg"
+          alt="Looking into Phoenix Cafe from the front door"
           fill
           priority
           className="object-cover object-[50%_28%]"
@@ -119,10 +119,10 @@ export function EatMenu() {
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1fr_1.1fr]">
           <div className="relative min-h-[420px] overflow-hidden rounded-[1.8rem]">
             <Image
-              src="/images/real/coffee-latte-counter.jpg"
-              alt="Latte, loyalty card and the yellow drinks board at Phoenix Cafe"
+              src="/images/real/cafe-counter.jpg"
+              alt="Phoenix Cafe counter, pastry case and yellow drinks board"
               fill
-              className="object-cover"
+              className="object-cover object-[55%_40%]"
               sizes="(min-width: 1024px) 40vw, 100vw"
             />
           </div>
@@ -160,6 +160,20 @@ export function EatMenu() {
             <p className="mt-8 rounded-2xl bg-white/5 px-4 py-3 text-sm">
               Loyalty card: {kitchen.loyalty}
             </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-5 pb-6 md:px-8">
+        <div className="overflow-hidden rounded-[1.8rem] border border-line bg-paper">
+          <div className="relative min-h-[520px] md:min-h-[720px]">
+            <Image
+              src="/images/real/printed-menu.jpg"
+              alt="Printed Phoenix Cafe breakfast and lunch menu"
+              fill
+              className="object-contain bg-cream"
+              sizes="100vw"
+            />
           </div>
         </div>
       </section>

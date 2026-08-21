@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Eyebrow } from "@/components/Brand";
-import { chair, kitchen, reviews, site, whatsappHref } from "@/lib/site";
+import { chair, gallery, kitchen, reviews, site, whatsappHref } from "@/lib/site";
 
 export function QuickFacts() {
   return (
@@ -46,8 +46,8 @@ export function DualStory() {
       <article className="card overflow-hidden">
         <div className="relative h-64">
           <Image
-            src="/images/real/interior-lime-green-booth-burger.jpg"
-            alt="Lime green booth and a house burger at Phoenix Cafe"
+            src="/images/real/interior-seating.jpg"
+            alt="Seating inside Phoenix Cafe — copper ceiling, lime booths and herringbone floor"
             fill
             className="object-cover"
             sizes="(min-width: 1024px) 50vw, 100vw"
@@ -87,6 +87,35 @@ export function DualStory() {
           </Link>
         </div>
       </article>
+    </section>
+  );
+}
+
+export function ShopGallery() {
+  return (
+    <section className="px-5 py-12 md:px-8">
+      <div className="mx-auto max-w-6xl">
+        <Eyebrow>The shop</Eyebrow>
+        <h2 className="mt-2 font-display text-5xl">As it looks on Wimborne Road</h2>
+        <div className="mt-8 grid gap-4 md:grid-cols-2">
+          {gallery.map((shot) => (
+            <figure
+              key={shot.src}
+              className={`relative overflow-hidden rounded-[1.6rem] ${
+                shot.wide ? "md:col-span-2 min-h-[320px] md:min-h-[460px]" : "min-h-[280px]"
+              }`}
+            >
+              <Image
+                src={shot.src}
+                alt={shot.alt}
+                fill
+                className="object-cover"
+                sizes={shot.wide ? "100vw" : "(min-width: 768px) 50vw, 100vw"}
+              />
+            </figure>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
@@ -132,10 +161,10 @@ export function BoardPrices() {
       <div className="mx-auto grid max-w-6xl overflow-hidden rounded-[1.8rem] border border-line bg-paper lg:grid-cols-2">
         <div className="relative min-h-[360px]">
           <Image
-            src="/images/real/coffee-latte-counter.jpg"
-            alt="Latte, loyalty card and the yellow drinks board at Phoenix Cafe"
+            src="/images/real/cafe-counter.jpg"
+            alt="Phoenix Cafe counter, pastry case and yellow drinks board"
             fill
-            className="object-cover"
+            className="object-cover object-[60%_50%]"
             sizes="(min-width: 1024px) 50vw, 100vw"
           />
         </div>
@@ -333,11 +362,20 @@ export function VisitBand() {
             Food hygiene {site.hygiene.rating}/5 · inspected {site.hygiene.inspected}
           </p>
         </div>
-        <div className="min-h-[420px] bg-cream-2">
+        <div className="grid min-h-[420px]">
+          <div className="relative min-h-[280px]">
+            <Image
+              src="/images/real/shop-front.jpg"
+              alt="The shop front at 493 Wimborne Road"
+              fill
+              className="object-cover"
+              sizes="(min-width: 1024px) 50vw, 100vw"
+            />
+          </div>
           <iframe
             title="Map of Phoenix Cutz & Cafe on Wimborne Road"
             src={site.address.embedUrl}
-            className="h-full min-h-[420px] w-full border-0"
+            className="h-full min-h-[280px] w-full border-0"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
           />

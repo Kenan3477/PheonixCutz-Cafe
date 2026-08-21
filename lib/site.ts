@@ -484,29 +484,33 @@ export const reviews = [
 
 export const gallery = [
   {
-    src: "/images/real/breakfast-full-english-mushrooms.jpg",
-    alt: "Full English breakfast at Phoenix Cafe with the black and gold menu",
+    src: "/images/real/shop-front.jpg",
+    alt: "Phoenix Turkish Barber by Yusuf and the cafe front on Wimborne Road",
     wide: true,
   },
   {
-    src: "/images/real/coffee-latte-counter.jpg",
-    alt: "Latte and yellow coffee loyalty card on the Phoenix Cafe counter",
+    src: "/images/real/interior-seating.jpg",
+    alt: "Cafe seating with copper ceiling and lime booths",
+    wide: false,
+  },
+  {
+    src: "/images/real/interior-from-door.jpg",
+    alt: "Looking down the cafe from the front door",
+    wide: false,
+  },
+  {
+    src: "/images/real/cafe-counter.jpg",
+    alt: "Service counter, pastry case and yellow Phoenix drinks board",
+    wide: false,
+  },
+  {
+    src: "/images/real/breakfast-full-english-mushrooms.jpg",
+    alt: "Full English breakfast at Phoenix Cafe",
+    wide: false,
   },
   {
     src: "/images/real/interior-lime-green-booth-burger.jpg",
-    alt: "Double cheeseburger and fries on the lime green booth at Phoenix Cafe",
-  },
-  {
-    src: "/images/real/breakfast-hash-browns-sausage.jpg",
-    alt: "Hash browns, sausage, bacon and beans at Phoenix Cafe",
-  },
-  {
-    src: "/images/real/bagel-sandwich-egg.jpg",
-    alt: "Avocado and halloumi bagel from Phoenix Cafe",
-  },
-  {
-    src: "/images/real/breakfast-veggie-hash-browns.jpg",
-    alt: "Garden breakfast with avocado and spinach at Phoenix Cafe",
+    alt: "Cheeseburger in the lime booth",
     wide: true,
   },
 ] as const;

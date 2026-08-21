@@ -9,6 +9,7 @@ import {
   KitchenBand,
   QuickFacts,
   ReviewsBand,
+  ShopGallery,
   VisitBand,
 } from "@/components/Sections";
 
@@ -18,6 +19,7 @@ export default function HomePage() {
       <Hero />
       <QuickFacts />
       <DualStory />
+      <ShopGallery />
       <KitchenBand />
       <BoardPrices />
       <ChairBand />

@@ -35,10 +35,10 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/images/real/breakfast-full-english-mushrooms.jpg",
-        width: 3072,
-        height: 4096,
-        alt: "Full English at Phoenix Cafe",
+        url: "/images/real/shop-front.jpg",
+        width: 1200,
+        height: 1600,
+        alt: "Phoenix Turkish Barber and Cafe on Wimborne Road",
       },
     ],
   },
