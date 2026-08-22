@@ -106,6 +106,7 @@ export type PublicSlot = {
   start: string;
   end: string;
   available: boolean;
+  kind: "open" | "past" | "taken";
 };
 
 export type PublicDay = {
@@ -285,6 +286,11 @@ export function buildPublicDays(
     }
 
     const slots = slotTimes(hours.open, hours.close).map((start) => {
+      const end = slotEnd(start, serviceMinutes);
+      const past = slotIsInPast(date, start);
+      const clash = activeBookings(store.bookings, date).some((booking) =>
+        bookingOccupies(booking, start, end),
+      );
       const fit = canFitService({
         isoDate: date,
         start,
@@ -292,10 +298,12 @@ export function buildPublicDays(
         bookings: store.bookings,
         closedDates: store.closedDates,
       });
+      const kind = past ? "past" : clash ? "taken" : "open";
       return {
         start,
-        end: slotEnd(start, serviceMinutes),
+        end,
         available: fit.ok,
+        kind,
       };
     });
 
@@ -427,6 +435,13 @@ export function moneyFor(bookings: Booking[], isoDate?: string) {
     .reduce((sum, booking) => sum + bookingPence(booking), 0);
 }
 
+export function publicDayMeta(day: PublicDay) {
+  if (day.closed) return "Closed";
+  const taken = day.slots.filter((slot) => slot.kind === "taken").length;
+  if (taken === 0) return "All free";
+  return taken === 1 ? "1 booked" : `${taken} booked`;
+}
+
 export function occupyPublicDays(
   days: PublicDay[],
   date: string,
@@ -443,7 +458,7 @@ export function occupyPublicDays(
         const slotStart = toMinutes(slot.start);
         const slotEndMinutes = toMinutes(slot.end);
         if (slotStart < to && slotEndMinutes > from) {
-          return { ...slot, available: false };
+          return { ...slot, available: false, kind: "taken" as const };
         }
         return slot;
       }),

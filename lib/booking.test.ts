@@ -14,6 +14,7 @@ import {
   normalizePhone,
   occupyPublicDays,
   pricePence,
+  publicDayMeta,
   rangesOverlap,
   shopHoursForDate,
   slotTimes,
@@ -114,6 +115,39 @@ test("taken times disappear from the public calendar immediately", () => {
   assert.equal(eleven?.available, false);
   assert.equal(elevenThirty?.available, false);
   assert.equal(twelve?.available, true);
+  assert.equal(eleven?.kind, "taken");
+});
+
+test("an empty Saturday is clear, not booked", () => {
+  const store = emptyBookingStore();
+  const days = buildPublicDays(store, "2026-08-22", 2, 30);
+  const saturday = days.find((day) => day.date === "2026-08-22");
+  const sunday = days.find((day) => day.date === "2026-08-23");
+  assert.ok(saturday);
+  assert.ok(sunday);
+  assert.equal(publicDayMeta(saturday), "All free");
+  assert.equal(publicDayMeta(sunday), "All free");
+  assert.ok(saturday.slots.every((slot) => slot.kind !== "taken"));
+  assert.ok(sunday.slots.every((slot) => slot.kind !== "taken"));
+});
+
+test("a booked Sunday shows how many seats are taken", () => {
+  const store = emptyBookingStore();
+  store.bookings.push(
+    createBooking({
+      date: "2026-12-27",
+      start: "11:00",
+      service: getService("hair-cut")!,
+      name: "Sam",
+      phone: "+447900000000",
+      source: "online",
+    }),
+  );
+  const days = buildPublicDays(store, "2026-12-27", 1, 30);
+  const sunday = days[0];
+  assert.ok(sunday);
+  assert.equal(publicDayMeta(sunday), "1 booked");
+  assert.equal(sunday.slots.find((slot) => slot.start === "11:00")?.kind, "taken");
 });
 
 test("money totals ignore blocked and cancelled chairs", () => {

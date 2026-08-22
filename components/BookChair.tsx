@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 import {
   chairServices,
   occupyPublicDays,
+  publicDayMeta,
   type ChairService,
   type PublicDay,
 } from "@/lib/booking";
@@ -45,6 +46,8 @@ export function BookChair() {
   const service = services.find((item) => item.id === serviceId) ?? services[0];
   const selectedDay = days.find((day) => day.date === date);
   const selectedSlot = selectedDay?.slots.find((slot) => slot.start === start);
+  const visibleSlots =
+    selectedDay?.slots.filter((slot) => slot.kind !== "past") ?? [];
 
   useEffect(() => {
     const controller = new AbortController();
@@ -130,8 +133,9 @@ export function BookChair() {
             Yusuf’s availability
           </h2>
           <p className="mt-4 max-w-xl text-cream/70">
-            Gold times are free. Dim times are already taken — names stay
-            private. Walk-ins are still welcome if a chair comes free.
+            Gold times are free. Times that have already gone are hidden. Dim
+            times are already in the book — names stay private. Walk-ins are
+            still welcome if a chair comes free.
           </p>
           {next ? (
             <p className="mt-4 text-sm text-gold-soft">
@@ -199,8 +203,7 @@ export function BookChair() {
                 closed={(value) => Boolean(days.find((day) => day.date === value)?.closed)}
                 meta={(value) => {
                   const day = days.find((item) => item.date === value);
-                  const free = day?.slots.filter((slot) => slot.available).length ?? 0;
-                  return `${free} free`;
+                  return day ? publicDayMeta(day) : "Open";
                 }}
               />
             </div>
@@ -211,10 +214,11 @@ export function BookChair() {
           <p className="text-sm text-cream/70">Time</p>
           {loading ? (
             <p className="mt-4 text-cream/55">Checking the book…</p>
-          ) : selectedDay && selectedDay.slots.length > 0 ? (
+          ) : visibleSlots.length > 0 ? (
             <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-6">
-              {selectedDay.slots.map((slot) => {
+              {visibleSlots.map((slot) => {
                 const selected = slot.start === start;
+                const taken = slot.kind === "taken";
                 return (
                   <button
                     key={slot.start}
@@ -224,12 +228,12 @@ export function BookChair() {
                     className={`rounded-2xl border px-3 py-3 text-sm font-semibold tracking-wide ${
                       selected
                         ? "border-gold bg-gold text-paper"
-                        : slot.available
-                          ? "border-gold/30 bg-gold/10 text-cream hover:border-gold"
-                          : "cursor-not-allowed border-white/5 bg-white/[0.03] text-cream/25"
+                        : taken
+                          ? "cursor-not-allowed border-white/5 bg-white/[0.03] text-cream/30"
+                          : "border-gold/30 bg-gold/10 text-cream hover:border-gold"
                     }`}
                   >
-                    {slot.available ? slot.start : slot.start}
+                    {taken ? "Taken" : slot.start}
                   </button>
                 );
               })}
