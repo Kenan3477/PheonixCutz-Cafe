@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Wordmark } from "@/components/Brand";
 import { HoursPill } from "@/components/HoursPill";
-import { site, whatsappHref } from "@/lib/site";
+import { site } from "@/lib/site";
 
 const links = [
   { href: "/menu", label: "Eat" },
@@ -40,12 +40,12 @@ export function Header() {
         </nav>
         <div className="flex shrink-0 items-center gap-3">
           <HoursPill className="hidden lg:inline-flex" />
-          <a
-            href={whatsappHref("Hi Phoenix — can I book a haircut?")}
+          <Link
+            href="/barber#book"
             className="btn btn-gold hidden sm:inline-flex"
           >
             Book a cut
-          </a>
+          </Link>
           <button
             type="button"
             className="inline-flex size-11 items-center justify-center rounded-full border border-line bg-paper md:hidden"
@@ -110,6 +110,9 @@ export function Footer() {
             <li>
               <Link href="/privacy">Privacy</Link>
             </li>
+            <li>
+              <Link href="/chair">Chair diary</Link>
+            </li>
           </ul>
         </div>
         <div>
@@ -152,12 +155,12 @@ export function MobileDock() {
       >
         Menu
       </Link>
-      <a
-        href={whatsappHref("Hi Yusuf — can I book a chair?")}
+      <Link
+        href="/barber#book"
         className="rounded-full bg-gold px-2 py-2.5 text-center text-sm font-semibold text-paper"
       >
         Book
-      </a>
+      </Link>
       <a
         href={site.address.mapsUrl}
         className="rounded-full px-2 py-2.5 text-center text-sm font-semibold"

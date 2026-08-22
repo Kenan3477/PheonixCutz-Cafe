@@ -225,12 +225,17 @@ export function ChairBand() {
         <p className="mt-8 max-w-3xl text-sm leading-7 text-cream/70">
           {chair.specialNote}
         </p>
-        <a
-          href={whatsappHref("Hi Yusuf — I’d like to book a haircut.")}
-          className="btn btn-gold mt-6"
-        >
-          WhatsApp to book
-        </a>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link href="/barber#book" className="btn btn-gold">
+            See availability
+          </Link>
+          <a
+            href={whatsappHref("Hi Yusuf — I’d like to book a haircut.")}
+            className="btn btn-ghost-dark"
+          >
+            WhatsApp Yusuf
+          </a>
+        </div>
       </div>
     </section>
   );
@@ -246,7 +251,7 @@ export function HowItWorks() {
     {
       n: "2",
       title: "Eat, or take a chair",
-      text: "Walk in for food and coffee. For a cut, WhatsApp or wait for the next chair.",
+      text: "Walk in for food and coffee. For a cut, book a free slot, WhatsApp, or wait for the next chair.",
     },
     {
       n: "3",

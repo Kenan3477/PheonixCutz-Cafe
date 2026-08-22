@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { HoursPill } from "@/components/HoursPill";
-import { site, whatsappHref } from "@/lib/site";
+import { site } from "@/lib/site";
 
 export function Hero() {
   return (
@@ -29,12 +29,9 @@ export function Hero() {
           <Link href="/menu" className="btn btn-gold">
             See the menu
           </Link>
-          <a
-            href={whatsappHref("Hi Yusuf — can I book a chair at Phoenix?")}
-            className="btn btn-ghost-dark"
-          >
+          <Link href="/barber#book" className="btn btn-ghost-dark">
             Book a haircut
-          </a>
+          </Link>
         </div>
         <dl className="mt-10 grid gap-4 text-sm sm:grid-cols-2">
           <div>

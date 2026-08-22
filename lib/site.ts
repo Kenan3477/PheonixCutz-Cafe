@@ -56,7 +56,8 @@ export const site = {
     },
     {
       title: "Book the chair",
-      detail: "WhatsApp Yusuf on 07902 852085. Walk-ins are taken when a chair is free.",
+      detail:
+        "Pick a free time on the Cut page, or WhatsApp Yusuf on 07902 852085. Walk-ins are taken when a chair is free.",
     },
     {
       title: "Kids are welcome",
@@ -70,7 +71,7 @@ export const site = {
   faqs: [
     {
       q: "Do I need to book?",
-      a: "Not for the cafe — walk in. For a haircut, walk-ins are fine, but WhatsApp is the surest way at busy times.",
+      a: "Not for the cafe — walk in. For a haircut, book a free slot on the Cut page, WhatsApp Yusuf, or wait for the next chair.",
     },
     {
       q: "What are the hours?",

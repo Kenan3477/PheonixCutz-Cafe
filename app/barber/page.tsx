@@ -17,9 +17,9 @@ export default function BarberPage() {
           Turkish barber prices
         </h1>
         <p className="mt-4 max-w-2xl text-muted">
-          WhatsApp Yusuf to hold a time. Walk-ins are welcome when a chair is
-          free. The cafe takes cash and card; ask at the chair if you want to
-          pay by card for a cut.
+          Book a free slot below — you can see when Yusuf is available.
+          Walk-ins are still welcome if a chair is free. The cafe takes cash
+          and card; ask at the chair if you want to pay by card for a cut.
         </p>
       </div>
       <ChairBand />
