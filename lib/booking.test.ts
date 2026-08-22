@@ -13,7 +13,7 @@ import {
   shopHoursForDate,
   slotTimes,
   slotsNeeded,
-} from "./booking.ts";
+} from "./booking";
 
 test("haircut needs one 30-minute slot and the special needs three", () => {
   assert.equal(slotsNeeded(30), 1);

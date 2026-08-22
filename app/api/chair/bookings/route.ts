@@ -199,11 +199,14 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "Say which booking to update." }, { status: 400 });
   }
 
+  const bookingId = body.id;
+  const nextStatus = body.status;
+
   const saved = await updateStore((store) => {
-    const index = store.bookings.findIndex((booking) => booking.id === body.id);
+    const index = store.bookings.findIndex((booking) => booking.id === bookingId);
     if (index === -1) return { error: "That booking is not in the book." };
     const bookings = store.bookings.slice();
-    bookings[index] = { ...bookings[index]!, status: body.status };
+    bookings[index] = { ...bookings[index]!, status: nextStatus };
     return { ...store, bookings };
   });
 

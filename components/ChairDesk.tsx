@@ -45,10 +45,23 @@ export function ChairDesk() {
   }
 
   useEffect(() => {
-    loadDesk().catch((err: unknown) => {
-      setError(err instanceof Error ? err.message : "Could not open the diary.");
-      setSignedIn(false);
-    });
+    fetch("/api/chair/bookings", { cache: "no-store" })
+      .then(async (response) => {
+        if (response.status === 401) {
+          setSignedIn(false);
+          return;
+        }
+        const payload = (await response.json()) as DeskPayload;
+        if (!response.ok) throw new Error(payload.error || "Could not open the diary.");
+        setData(payload);
+        setSignedIn(true);
+        setDate((current) => current || payload.today);
+        setServiceId((current) => current || payload.services[0]?.id || "hair-cut");
+      })
+      .catch((err: unknown) => {
+        setError(err instanceof Error ? err.message : "Could not open the diary.");
+        setSignedIn(false);
+      });
   }, []);
 
   const dayBookings = useMemo(

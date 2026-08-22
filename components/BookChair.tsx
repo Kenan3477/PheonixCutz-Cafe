@@ -46,8 +46,6 @@ export function BookChair() {
 
   useEffect(() => {
     const controller = new AbortController();
-    setLoading(true);
-    setError("");
     fetch(`/api/bookings/availability?service=${encodeURIComponent(serviceId)}`, {
       signal: controller.signal,
       cache: "no-store",
@@ -65,12 +63,14 @@ export function BookChair() {
           return data.next?.date ?? data.days.find((day) => !day.closed)?.date ?? "";
         });
         setStart("");
+        setError("");
+        setLoading(false);
       })
       .catch((err: unknown) => {
         if (err instanceof DOMException && err.name === "AbortError") return;
         setError(err instanceof Error ? err.message : "Could not load times.");
-      })
-      .finally(() => setLoading(false));
+        setLoading(false);
+      });
     return () => controller.abort();
   }, [serviceId]);
 
@@ -165,7 +165,11 @@ export function BookChair() {
           <span className="text-muted">Service</span>
           <select
             value={serviceId}
-            onChange={(event) => setServiceId(event.target.value)}
+            onChange={(event) => {
+              setServiceId(event.target.value);
+              setLoading(true);
+              setStart("");
+            }}
             className="mt-2 w-full rounded-xl border border-line bg-cream px-4 py-3 text-ink outline-none"
           >
             {services.map((item) => (
@@ -287,11 +291,7 @@ export function BookChair() {
           <a className="font-semibold text-teal" href={site.whatsapp}>
             WhatsApp {site.phoneDisplay}
           </a>
-          . Yusuf’s diary is at{" "}
-          <a className="font-semibold text-teal" href="/chair">
-            /chair
-          </a>
-          .
+          . Walk-ins are still fine if a chair comes free.
         </p>
       </form>
     </section>
