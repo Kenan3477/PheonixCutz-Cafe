@@ -298,13 +298,13 @@ export function buildPublicDays(
         bookings: store.bookings,
         closedDates: store.closedDates,
       });
-      const kind = past ? "past" : clash ? "taken" : "open";
+      const kind: PublicSlot["kind"] = past ? "past" : clash ? "taken" : "open";
       return {
         start,
         end,
         available: fit.ok,
         kind,
-      };
+      } satisfies PublicSlot;
     });
 
     return {
