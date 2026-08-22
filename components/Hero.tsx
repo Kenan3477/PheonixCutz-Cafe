@@ -22,7 +22,7 @@ export function Hero() {
           Cafe and Turkish barber in Winton
         </h1>
         <p className="mt-5 max-w-xl text-[1.05rem] leading-7 text-cream/80">
-          One door on Wimborne Road. Full English plates and proper coffee on
+          Our door on Wimborne Road. Full English plates and proper coffee on
           one side, Yusuf’s chair on the other. Walk in, say hello.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">

@@ -79,8 +79,8 @@ export function DualStory() {
           <Eyebrow>Cut</Eyebrow>
           <h2 className="mt-2 font-display text-4xl">The barber</h2>
           <p className="mt-3 text-muted">
-            Yusuf’s Turkish barber: skin fades, wet shaves, kids’ cuts, and the
-            Phoenix Special with hot towel and face mask. Coffee while you wait.
+            Skin fades, wet shaves, kids’ cuts, and the Phoenix Special with
+            hot towel and face mask. Coffee while you wait.
           </p>
           <Link href="/barber" className="mt-5 inline-flex font-semibold text-teal">
             See prices and book →
@@ -128,7 +128,7 @@ export function KitchenBand() {
       <div className="mx-auto max-w-6xl">
         <div className="max-w-2xl">
           <Eyebrow>From the kitchen</Eyebrow>
-          <h2 className="mt-2 font-display text-5xl">What they actually serve</h2>
+          <h2 className="mt-2 font-display text-5xl">What we serve</h2>
           <p className="mt-4 text-muted">{kitchen.intro}</p>
         </div>
         <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -171,10 +171,10 @@ export function BoardPrices() {
           />
         </div>
         <div className="p-7 md:p-10">
-          <Eyebrow>On the yellow board</Eyebrow>
-          <h2 className="mt-2 font-display text-4xl">Coffee and sweets</h2>
+          <Eyebrow>Coffee</Eyebrow>
+          <h2 className="mt-2 font-display text-4xl">What we pour</h2>
           <p className="mt-3 text-muted">
-            {kitchen.intro} {kitchen.milkNote}
+            {kitchen.drinksIntro} {kitchen.milkNote}
           </p>
           <ul className="mt-6">
             {kitchen.drinks.slice(0, 8).map((item) => (
@@ -256,7 +256,7 @@ export function HowItWorks() {
     {
       n: "3",
       title: "Ask if you’re unsure",
-      text: "Food prices are on the printed menu. Drinks are on the yellow board. The team will talk you through allergies.",
+      text: "Our food prices are on the menu. Drinks are on the yellow board. Ask us about allergies.",
     },
   ];
 
@@ -299,7 +299,7 @@ export function ReviewsBand() {
     <section className="px-5 py-12 md:px-8">
       <div className="mx-auto max-w-6xl">
         <Eyebrow>What people say</Eyebrow>
-        <h2 className="mt-2 font-display text-4xl">From local listings</h2>
+        <h2 className="mt-2 font-display text-4xl">From people who come in</h2>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {reviews.map((review) => (
             <blockquote key={review.quote} className="card p-6">

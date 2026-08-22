@@ -43,7 +43,7 @@ export function EatMenu() {
             <a href={site.hygiene.url} className="underline decoration-gold/50">
               5/5 · {site.hygiene.label}
             </a>
-            . Cash and card at the cafe counter.
+            . Cash and card at our counter.
           </p>
         </div>
       </section>
@@ -68,7 +68,7 @@ export function EatMenu() {
           id={section.id}
           className="mx-auto max-w-6xl scroll-mt-32 px-5 py-14 md:px-8"
         >
-          <p className="text-sm font-semibold text-teal">Printed menu</p>
+          <p className="text-sm font-semibold text-teal">Kitchen</p>
           <h2 className="mt-1 font-display text-5xl">{section.title}</h2>
           {section.id === "breakfast" ? (
             <p className="mt-3 max-w-2xl text-muted">{kitchen.breakfastNote}</p>
@@ -129,8 +129,10 @@ export function EatMenu() {
           <div>
             <LogoMark size={64} className="mb-5" />
             <p className="font-script text-3xl text-gold-soft">Good Coffee</p>
-            <h2 className="mt-2 font-display text-5xl">From the yellow board</h2>
-            <p className="mt-3 text-sm text-cream/60">{kitchen.milkNote}</p>
+            <h2 className="mt-2 font-display text-5xl">What we pour</h2>
+            <p className="mt-3 text-sm text-cream/60">
+              {kitchen.drinksIntro} {kitchen.milkNote}
+            </p>
             <ul className="mt-8">
               {kitchen.drinks.map((item) => (
                 <li key={item.name} className="price-row text-cream">
@@ -168,7 +170,7 @@ export function EatMenu() {
         <div className="overflow-hidden rounded-[1.8rem] border border-line bg-cream">
           <Image
             src="/images/real/printed-menu.jpg"
-            alt="Printed Phoenix Cafe breakfast and lunch menu"
+            alt="Our breakfast and lunch menu"
             width={1687}
             height={1206}
             className="h-auto w-full"
@@ -179,7 +181,7 @@ export function EatMenu() {
 
       <section id="sweets" className="mx-auto max-w-6xl scroll-mt-32 px-5 py-16 md:px-8">
         <p className="text-sm font-semibold text-teal">Cake and sweets</p>
-        <h2 className="mt-1 font-display text-5xl">From the printed menu</h2>
+        <h2 className="mt-1 font-display text-5xl">After the plate</h2>
         <div className="mt-8 overflow-hidden rounded-[1.6rem] border border-line bg-paper">
           {kitchen.sweets.map((item) => (
             <div
@@ -197,7 +199,7 @@ export function EatMenu() {
           ))}
         </div>
         <p className="mt-6 text-sm text-muted">
-          Smaller counter bakes on the chalkboard:{" "}
+          Smaller bakes on our chalkboard:{" "}
           {kitchen.counterBakes.map((item) => `${item.name} ${item.price}`).join(" · ")}.
         </p>
       </section>
@@ -215,7 +217,7 @@ export function EatMenu() {
         <div className="card p-6">
           <h3 className="font-display text-2xl">See today’s specials</h3>
           <p className="mt-2 text-muted">
-            They post plates on Instagram as they cook them.
+            We post plates on Instagram as we cook them.
           </p>
           <a
             href={site.instagram}

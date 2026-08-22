@@ -75,7 +75,7 @@ export function Header() {
             ))}
             <HoursPill />
             <a className="btn btn-gold" href={site.whatsapp}>
-              WhatsApp the shop
+              WhatsApp us
             </a>
           </div>
         </div>

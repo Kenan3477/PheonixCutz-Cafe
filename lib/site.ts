@@ -9,7 +9,7 @@ export const site = {
   welcome: "We are so glad you are here.",
   feel: "Feel the difference",
   description:
-    "A Turkish barber and all-day cafe on Wimborne Road in Winton, Bournemouth. Full English plates, coffee, and traditional cuts under one roof.",
+    "Our Turkish barber and all-day cafe on Wimborne Road in Winton, Bournemouth. Full English plates, coffee, and traditional cuts under one roof.",
   address: {
     line1: "493 Wimborne Road",
     area: "Winton",
@@ -48,7 +48,7 @@ export const site = {
     { day: "Sunday", open: "10:00", close: "16:00" },
   ] as const,
   hoursNote:
-    "Hours from the Phoenix Turkish Barber listings for this address. Pop in for food; WhatsApp if you want a chair held.",
+    "Pop in for food. WhatsApp if you want a chair held.",
   amenities: [
     {
       title: "Walk in for food",
@@ -61,7 +61,7 @@ export const site = {
     },
     {
       title: "Kids are welcome",
-      detail: "Kids’ cuts from £9, and the cafe is used to family tables.",
+      detail: "Kids’ cuts from £9, and we are used to family tables.",
     },
     {
       title: "Easy to reach",
@@ -79,15 +79,15 @@ export const site = {
     },
     {
       q: "Is it cash only?",
-      a: "The cafe counter sticker says cash and card are accepted. Older barber listings still say cash for the chair — ask if you want to pay by card for a cut.",
+      a: "Cash and card at the cafe counter. Ask at the chair if you want to pay by card for a cut.",
     },
     {
       q: "Is it good for children?",
-      a: "Yes. Kids’ haircuts are on the list, and the lime booths are used as a family cafe.",
+      a: "Yes. We do kids’ haircuts, and families use the lime booths all the time.",
     },
     {
       q: "What about allergies or prices on the food?",
-      a: "Food prices are from their printed Phoenix Cafe menu. Drink prices are from the yellow counter board. Tell the team about allergies when you order.",
+      a: "Our food prices are on the menu. Drink prices are on the yellow board behind the counter. Tell us about allergies when you order.",
     },
     {
       q: "What’s the hygiene rating?",
@@ -110,7 +110,9 @@ export const site = {
 
 export const kitchen = {
   intro:
-    "Food prices from their printed Phoenix Cafe menu. Drink prices from the yellow counter board: PHOENIX — Fresh Food, Warm Coffee.",
+    "This is what we serve. Breakfasts, baps, bagels, lunch plates, and coffee — fresh food, warm coffee.",
+  drinksIntro:
+    "Coffee, tea and shakes from our board. Fresh food, warm coffee.",
   breakfastNote:
     "All breakfasts include a pot of tea and are served with fresh crusty bread.",
   omeletteNote: "All omelettes are served with fresh crusty bread.",
@@ -366,7 +368,7 @@ export const kitchen = {
       section: "breakfast",
       tag: "£8.50 · pot of tea",
       photo: "/images/real/breakfast-full-english-mushrooms.jpg",
-      blurb: "The house breakfast from their printed menu.",
+      blurb: "Our house breakfast — pot of tea and crusty bread.",
       includes: [
         "Bacon",
         "Sausage",
@@ -406,7 +408,7 @@ export const kitchen = {
       section: "plates",
       tag: "£6.50",
       photo: "/images/real/interior-lime-green-booth-burger.jpg",
-      blurb: "From the lunch list, photographed in the lime booth.",
+      blurb: "Our cheeseburger, in the lime booth.",
       includes: ["Cheeseburger", "Chips"],
     },
     {
@@ -414,7 +416,7 @@ export const kitchen = {
       section: "plates",
       tag: "£6.00",
       photo: "/images/real/bagel-sandwich-egg.jpg",
-      blurb: "On the printed bagel list.",
+      blurb: "Our smashed avocado and egg bagel.",
       includes: ["Bagel", "Avocado", "Egg"],
     },
   ],
@@ -422,9 +424,9 @@ export const kitchen = {
 
 export const chair = {
   intro:
-    "Official Phoenix Turkish Barbers price list from their Wimborne Road site. Yusuf’s chair: traditional Turkish work with a British finish. Complimentary coffee while you wait.",
+    "Traditional Turkish work with a British finish. Coffee while you wait.",
   specialNote:
-    "The Phoenix Special includes a hot wax, ear flame, hot towel, face mask and more — as listed on their Facebook page.",
+    "The Phoenix Special includes a hot wax, ear flame, hot towel, face mask and more.",
   groups: [
     {
       title: "Cuts",
@@ -468,18 +470,18 @@ export const chair = {
 
 export const reviews = [
   {
-    quote: "Facebook page shows 100% recommend from the reviews left there.",
-    source: "Phoenix Turkish Baber on Facebook",
+    quote: "People on our Facebook page have recommended us every time so far.",
+    source: "Facebook",
   },
   {
     quote:
-      "Locals praise Yusuf for listening first, then cutting — traditional Turkish work with a British finish.",
-    source: "Winton shop listings",
+      "I listen first, then I cut — traditional Turkish work with a British finish.",
+    source: "Yusuf",
   },
   {
     quote:
-      "Complimentary coffee in the chair, kids welcome, and the occasional wait at peak times.",
-    source: "Customer notes on the Wimborne Road shop",
+      "Coffee in the chair, kids welcome, and sometimes a short wait when we are busy.",
+    source: "How we work",
   },
 ] as const;
 

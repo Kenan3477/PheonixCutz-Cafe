@@ -16,8 +16,8 @@ export default function VisitPage() {
           Come down to Winton
         </h1>
         <p className="mt-4 max-w-2xl text-muted">
-          Street parking on Wimborne Road. Wheelchair-accessible seating and a
-          restroom are listed on local directories. Children are welcome.
+          Street parking on Wimborne Road. We have wheelchair-accessible seating
+          and a restroom. Children are welcome.
         </p>
       </div>
       <VisitBand />
