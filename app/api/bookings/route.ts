@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
 import {
   BOOKING_HORIZON_DAYS,
+  buildPublicDays,
   canFitService,
   createBooking,
   getService,
   isClockTime,
   isIsoDate,
+  nextAvailableSlot,
   normalizeName,
   normalizePhone,
   publicBooking,
@@ -108,13 +110,26 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: saved.error }, { status: 409 });
   }
 
-  const booking = saved.data.bookings.at(-1);
+  const booking = saved.data.bookings.find(
+    (item) =>
+      item.date === date &&
+      item.start === start &&
+      item.customerPhone === phone &&
+      item.status === "booked",
+  );
   if (!booking) {
     return NextResponse.json({ error: "The booking did not save." }, { status: 500 });
   }
 
   return NextResponse.json({
     booking: publicBooking(booking),
+    days: buildPublicDays(
+      saved.data,
+      londonNow().isoDate,
+      BOOKING_HORIZON_DAYS,
+      service.minutes,
+    ),
+    next: nextAvailableSlot(saved.data, service.minutes),
     whatsapp: whatsappHref(
       [
         `Hi Yusuf — I booked on the Phoenix website.`,

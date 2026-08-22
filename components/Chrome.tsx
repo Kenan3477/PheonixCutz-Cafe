@@ -85,6 +85,9 @@ export function Header() {
 }
 
 export function Footer() {
+  const pathname = usePathname();
+  if (pathname === "/chair") return null;
+
   return (
     <footer className="bg-ink-deep px-5 py-16 text-cream md:px-8">
       <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-4">
@@ -144,6 +147,7 @@ export function Footer() {
 
 export function MobileDock() {
   const pathname = usePathname();
+  if (pathname === "/chair") return null;
 
   return (
     <nav className="fixed inset-x-3 bottom-3 z-50 grid grid-cols-3 gap-2 rounded-full border border-line bg-paper/95 p-1.5 shadow-xl backdrop-blur md:hidden">

@@ -57,6 +57,51 @@ export type ChairService = {
   group: string;
 };
 
+export type QuickChairAction =
+  | {
+      kind: "book";
+      serviceId: string;
+      label: string;
+      hint: string;
+    }
+  | {
+      kind: "block";
+      minutes: number;
+      label: string;
+      hint: string;
+    };
+
+export const quickChairActions: QuickChairAction[] = [
+  { kind: "book", serviceId: "hair-cut", label: "Cut", hint: "30 min · £14" },
+  {
+    kind: "book",
+    serviceId: "skin-fade-with-zero-clipper-fade",
+    label: "Fade",
+    hint: "45 min · £17",
+  },
+  {
+    kind: "book",
+    serviceId: "hair-cut-and-wash",
+    label: "Wash",
+    hint: "45 min · £18",
+  },
+  {
+    kind: "book",
+    serviceId: "turkish-wet-shave",
+    label: "Shave",
+    hint: "30 min · £12",
+  },
+  { kind: "book", serviceId: "kids-haircut", label: "Kids", hint: "30 min · £9" },
+  {
+    kind: "book",
+    serviceId: "phoenix-special-hair-cut",
+    label: "Special",
+    hint: "75 min · £37",
+  },
+  { kind: "block", minutes: 30, label: "Busy 30", hint: "Hold the chair" },
+  { kind: "block", minutes: 45, label: "Busy 45", hint: "Longer hold" },
+];
+
 export type PublicSlot = {
   start: string;
   end: string;
@@ -358,4 +403,98 @@ export function publicBooking(booking: Booking) {
     serviceName: booking.serviceName,
     serviceId: booking.serviceId,
   };
+}
+
+export function pricePence(price: string) {
+  const match = /£\s*(\d+(?:\.\d+)?)/.exec(price);
+  return match ? Math.round(Number(match[1]) * 100) : 0;
+}
+
+export function formatPounds(pence: number) {
+  const pounds = pence / 100;
+  return Number.isInteger(pounds) ? `£${pounds}` : `£${pounds.toFixed(2)}`;
+}
+
+export function bookingPence(booking: Booking) {
+  if (booking.status === "cancelled" || booking.status === "blocked") return 0;
+  const service = getService(booking.serviceId);
+  return service ? pricePence(service.price) : 0;
+}
+
+export function moneyFor(bookings: Booking[], isoDate?: string) {
+  return bookings
+    .filter((booking) => !isoDate || booking.date === isoDate)
+    .reduce((sum, booking) => sum + bookingPence(booking), 0);
+}
+
+export function occupyPublicDays(
+  days: PublicDay[],
+  date: string,
+  start: string,
+  minutes: number,
+) {
+  const from = toMinutes(start);
+  const to = from + minutes;
+  return days.map((day) => {
+    if (day.date !== date) return day;
+    return {
+      ...day,
+      slots: day.slots.map((slot) => {
+        const slotStart = toMinutes(slot.start);
+        const slotEndMinutes = toMinutes(slot.end);
+        if (slotStart < to && slotEndMinutes > from) {
+          return { ...slot, available: false };
+        }
+        return slot;
+      }),
+    };
+  });
+}
+
+export function nextFreeStart(options: {
+  isoDate: string;
+  minutes: number;
+  bookings: Booking[];
+  closedDates: string[];
+  ignoreNotice?: boolean;
+}) {
+  const hours = shopHoursForDate(options.isoDate);
+  if (!hours.open || !hours.close) return null;
+  for (const start of slotTimes(hours.open, hours.close)) {
+    const fit = canFitService({
+      isoDate: options.isoDate,
+      start,
+      minutes: options.minutes,
+      bookings: options.bookings,
+      closedDates: options.closedDates,
+      ignoreNotice: options.ignoreNotice,
+      ignoreClosed: true,
+    });
+    if (fit.ok) return start;
+  }
+  return null;
+}
+
+export type BoardCell = {
+  start: string;
+  end: string;
+  booking: Booking | null;
+  continuation: boolean;
+};
+
+export function buildDayBoard(isoDate: string, bookings: Booking[]): BoardCell[] {
+  const hours = shopHoursForDate(isoDate);
+  if (!hours.open || !hours.close) return [];
+  const taken = activeBookings(bookings, isoDate);
+  return slotTimes(hours.open, hours.close).map((start) => {
+    const end = slotEnd(start, SLOT_MINUTES);
+    const booking =
+      taken.find((item) => bookingOccupies(item, start, end)) ?? null;
+    return {
+      start,
+      end,
+      booking,
+      continuation: Boolean(booking && booking.start !== start),
+    };
+  });
 }

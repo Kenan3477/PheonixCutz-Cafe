@@ -6,6 +6,7 @@ import {
   getService,
   isClockTime,
   isIsoDate,
+  nextFreeStart,
   normalizeName,
   normalizePhone,
 } from "@/lib/booking";
@@ -92,23 +93,26 @@ export async function POST(request: Request) {
       : NextResponse.json({ error: saved.error }, { status: 409 });
   }
 
-  const start = body.start ?? "";
-  if (!isClockTime(start)) {
-    return NextResponse.json({ error: "Pick a start time." }, { status: 400 });
-  }
+  if (body.type === "block" || body.type === "quick") {
+    const minutes =
+      body.type === "block"
+        ? [30, 45, 60, 75, 90].includes(Number(body.minutes))
+          ? Number(body.minutes)
+          : 30
+        : (getService(body.serviceId ?? "") ?? chairServices[0]).minutes;
 
-  if (body.type === "block") {
-    const minutes = [30, 45, 60, 75, 90].includes(Number(body.minutes))
-      ? Number(body.minutes)
-      : 30;
-    const blockService = {
-      id: "blocked",
-      name: body.notes?.trim() || "Busy",
-      price: "",
-      minutes,
-      group: "Blocked",
-    };
     const saved = await updateStore((store) => {
+      const start =
+        isClockTime(body.start ?? "")
+          ? body.start!
+          : nextFreeStart({
+              isoDate: date,
+              minutes,
+              bookings: store.bookings,
+              closedDates: store.closedDates,
+              ignoreNotice: true,
+            });
+      if (!start) return { error: "No free time left that day." };
       const fit = canFitService({
         isoDate: date,
         start,
@@ -119,6 +123,33 @@ export async function POST(request: Request) {
         ignoreClosed: true,
       });
       if (!fit.ok) return { error: fit.reason };
+
+      if (body.type === "block") {
+        return {
+          ...store,
+          bookings: [
+            ...store.bookings,
+            createBooking({
+              date,
+              start,
+              service: {
+                id: "blocked",
+                name: body.notes?.trim() || "Busy",
+                price: "",
+                minutes,
+                group: "Blocked",
+              },
+              name: "Yusuf",
+              phone: "",
+              notes: body.notes,
+              source: "yusuf",
+              status: "blocked",
+            }),
+          ],
+        };
+      }
+
+      const service = getService(body.serviceId ?? "hair-cut") ?? chairServices[0];
       return {
         ...store,
         bookings: [
@@ -126,12 +157,11 @@ export async function POST(request: Request) {
           createBooking({
             date,
             start,
-            service: blockService,
-            name: "Yusuf",
-            phone: "",
+            service,
+            name: normalizeName(body.name ?? "") || "Walk-in",
+            phone: body.phone?.trim() ? normalizePhone(body.phone) : "",
             notes: body.notes,
             source: "yusuf",
-            status: "blocked",
           }),
         ],
       };
@@ -141,12 +171,14 @@ export async function POST(request: Request) {
       : NextResponse.json({ error: saved.error }, { status: 409 });
   }
 
-  const service = getService(body.serviceId ?? "hair-cut") ?? chairServices[0];
-  const name = normalizeName(body.name ?? "");
-  const phone = body.phone?.trim() ? normalizePhone(body.phone) : "";
-  if (name.length < 2) {
-    return NextResponse.json({ error: "Add the customer’s name." }, { status: 400 });
+  const start = body.start ?? "";
+  if (!isClockTime(start)) {
+    return NextResponse.json({ error: "Pick a start time." }, { status: 400 });
   }
+
+  const service = getService(body.serviceId ?? "hair-cut") ?? chairServices[0];
+  const name = normalizeName(body.name ?? "") || "Walk-in";
+  const phone = body.phone?.trim() ? normalizePhone(body.phone) : "";
   if (body.phone?.trim() && !phone) {
     return NextResponse.json({ error: "Use a UK mobile, or leave the number blank." }, { status: 400 });
   }

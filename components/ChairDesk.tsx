@@ -1,8 +1,18 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
-import type { Booking, ChairService } from "@/lib/booking";
-import { displayPhone } from "@/lib/booking";
+import {
+  bookingPence,
+  buildDayBoard,
+  displayPhone,
+  formatPounds,
+  isIsoDate,
+  moneyFor,
+  quickChairActions,
+  type Booking,
+  type ChairService,
+  type QuickChairAction,
+} from "@/lib/booking";
 import { addDaysToIsoDate, formatLondonDay, formatLondonLongDay } from "@/lib/london";
 import { site } from "@/lib/site";
 
@@ -21,14 +31,10 @@ export function ChairDesk() {
   const [password, setPassword] = useState("");
   const [data, setData] = useState<DeskPayload | null>(null);
   const [date, setDate] = useState("");
+  const [start, setStart] = useState("");
+  const [walkInName, setWalkInName] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [serviceId, setServiceId] = useState("hair-cut");
-  const [start, setStart] = useState("10:00");
-  const [notes, setNotes] = useState("");
-  const [blockMinutes, setBlockMinutes] = useState(30);
 
   async function loadDesk() {
     const response = await fetch("/api/chair/bookings", { cache: "no-store" });
@@ -41,7 +47,6 @@ export function ChairDesk() {
     setData(payload);
     setSignedIn(true);
     setDate((current) => current || payload.today);
-    setServiceId((current) => current || payload.services[0]?.id || "hair-cut");
   }
 
   useEffect(() => {
@@ -56,7 +61,6 @@ export function ChairDesk() {
         setData(payload);
         setSignedIn(true);
         setDate((current) => current || payload.today);
-        setServiceId((current) => current || payload.services[0]?.id || "hair-cut");
       })
       .catch((err: unknown) => {
         setError(err instanceof Error ? err.message : "Could not open the diary.");
@@ -64,18 +68,33 @@ export function ChairDesk() {
       });
   }, []);
 
+  const dayOptions = data
+    ? Array.from({ length: 14 }, (_, index) => addDaysToIsoDate(data.today, index))
+    : [];
+  const weekDates = dayOptions.slice(0, 7);
+  const dayClosed = Boolean(data?.closedDates.includes(date));
   const dayBookings = useMemo(
     () =>
       (data?.bookings ?? [])
-        .filter((booking) => booking.date === date)
+        .filter((booking) => booking.date === date && booking.status !== "cancelled")
         .sort((a, b) => a.start.localeCompare(b.start)),
     [data, date],
   );
-
-  const dayClosed = Boolean(data?.closedDates.includes(date));
-  const dayOptions = data
-    ? Array.from({ length: 21 }, (_, index) => addDaysToIsoDate(data.today, index - 1))
-    : [];
+  const board = useMemo(
+    () => (isIsoDate(date) ? buildDayBoard(date, data?.bookings ?? []) : []),
+    [data, date],
+  );
+  const todayMoney = moneyFor(data?.bookings ?? [], data?.today);
+  const weekMoney = (data?.bookings ?? [])
+    .filter((booking) => weekDates.includes(booking.date))
+    .reduce((sum, booking) => sum + bookingPence(booking), 0);
+  const dayMoney = moneyFor(data?.bookings ?? [], date);
+  const todayCuts = (data?.bookings ?? []).filter(
+    (booking) =>
+      booking.date === data?.today &&
+      (booking.status === "booked" || booking.status === "done"),
+  ).length;
+  const nextUp = dayBookings.find((booking) => booking.status === "booked");
 
   async function onLogin(event: FormEvent) {
     event.preventDefault();
@@ -109,15 +128,33 @@ export function ChairDesk() {
       });
       const payload = (await response.json()) as { error?: string };
       if (!response.ok) throw new Error(payload.error || "Could not save.");
-      setName("");
-      setPhone("");
-      setNotes("");
+      setWalkInName("");
       await loadDesk();
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Could not save.");
     } finally {
       setBusy(false);
     }
+  }
+
+  async function runQuick(action: QuickChairAction) {
+    if (action.kind === "block") {
+      await postChange({
+        type: "block",
+        date,
+        start,
+        minutes: action.minutes,
+        notes: "Busy",
+      });
+      return;
+    }
+    await postChange({
+      type: "quick",
+      date,
+      start,
+      serviceId: action.serviceId,
+      name: walkInName || "Walk-in",
+    });
   }
 
   async function setStatus(id: string, status: "cancelled" | "done") {
@@ -141,285 +178,302 @@ export function ChairDesk() {
 
   if (signedIn === null) {
     return (
-      <div className="mx-auto max-w-lg px-5 py-16">
-        <p className="text-muted">Opening the chair diary…</p>
+      <div className="dark-section min-h-[60vh] px-5 py-16">
+        <p className="text-cream/60">Opening the chair diary…</p>
       </div>
     );
   }
 
   if (!signedIn) {
     return (
-      <form onSubmit={onLogin} className="card mx-auto mt-10 max-w-lg p-7">
-        <p className="text-sm font-semibold text-teal">Chair diary</p>
-        <h1 className="mt-1 font-display text-4xl">Yusuf’s book</h1>
-        <p className="mt-3 text-muted">
-          Customers only see free or busy. Names and numbers stay on this page.
-        </p>
-        <label className="mt-6 block text-sm">
-          <span className="text-muted">Password</span>
-          <input
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            className="mt-2 w-full rounded-xl border border-line bg-cream px-4 py-3 text-ink outline-none"
-            autoComplete="current-password"
-          />
-        </label>
-        {error ? <p className="mt-3 text-sm font-semibold text-teal">{error}</p> : null}
-        <button type="submit" className="btn btn-gold mt-5" disabled={busy}>
-          {busy ? "Checking…" : "Open the book"}
-        </button>
-      </form>
+      <section className="dark-section px-5 py-16">
+        <form onSubmit={onLogin} className="mx-auto max-w-lg rounded-[1.6rem] border border-white/10 bg-white/5 p-7">
+          <p className="text-sm font-semibold tracking-[0.18em] uppercase text-gold-soft">
+            Chair diary
+          </p>
+          <h1 className="mt-3 font-display text-5xl text-cream">Yusuf’s book</h1>
+          <p className="mt-3 text-cream/65">
+            The public site only shows free or busy. Names, numbers and takings stay here.
+          </p>
+          <label className="mt-6 block text-sm text-cream/70">
+            Password
+            <input
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              className="mt-3 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-cream outline-none"
+              autoComplete="current-password"
+            />
+          </label>
+          {error ? <p className="mt-3 text-sm font-semibold text-gold-soft">{error}</p> : null}
+          <button type="submit" className="btn btn-gold mt-6" disabled={busy}>
+            {busy ? "Checking…" : "Open the book"}
+          </button>
+        </form>
+      </section>
     );
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-5 py-10 md:px-8">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <p className="text-sm font-semibold text-teal">Chair diary</p>
-          <h1 className="mt-1 font-display text-5xl">The book</h1>
-          <p className="mt-2 text-muted">
-            {formatLondonLongDay(date)}
-            {dayClosed ? " · closed to online booking" : ""}
-          </p>
+    <div className="dark-section min-h-screen px-5 pb-36 pt-8 md:px-8">
+      <div className="mx-auto max-w-6xl">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold tracking-[0.18em] uppercase text-gold-soft">
+              Chair diary
+            </p>
+            <h1 className="mt-2 font-display text-5xl text-cream">The book</h1>
+            <p className="mt-2 text-cream/65">
+              {formatLondonLongDay(date)}
+              {dayClosed ? " · closed online" : ""}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <button
+              type="button"
+              className="btn btn-ghost-dark"
+              disabled={busy}
+              onClick={() => postChange({ type: dayClosed ? "open" : "close", date })}
+            >
+              {dayClosed ? "Open this day" : "Close this day"}
+            </button>
+            <button
+              type="button"
+              className="btn btn-ghost-dark"
+              onClick={async () => {
+                await fetch("/api/chair/logout", { method: "POST" });
+                setSignedIn(false);
+                setData(null);
+              }}
+            >
+              Sign out
+            </button>
+          </div>
         </div>
-        <button
-          type="button"
-          className="btn btn-ghost"
-          onClick={async () => {
-            await fetch("/api/chair/logout", { method: "POST" });
-            setSignedIn(false);
-            setData(null);
-          }}
-        >
-          Sign out
-        </button>
-      </div>
 
-      {data?.store === "ephemeral" ? (
-        <p className="mt-5 rounded-2xl border border-gold/40 bg-gold/10 px-4 py-3 text-sm">
-          Bookings are on temporary storage until a KV database is connected in
-          Vercel. They can reset when the site updates. Kenan can add Storage →
-          KV on the Vercel project to keep the diary.
-        </p>
-      ) : (
-        <p className="mt-5 text-sm text-muted">Diary {data?.storeLabel}.</p>
-      )}
+        <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <Stat label="Today" value={formatPounds(todayMoney)} detail={`${todayCuts} on the book`} />
+          <Stat label="Next 7 days" value={formatPounds(weekMoney)} detail="Booked and done" />
+          <Stat label="This day" value={formatPounds(dayMoney)} detail={`${dayBookings.length} written in`} />
+          <Stat
+            label="Next up"
+            value={nextUp ? nextUp.start : "Clear"}
+            detail={nextUp ? nextUp.customerName : "No one waiting"}
+          />
+        </div>
 
-      <div className="mt-6 flex gap-2 overflow-x-auto pb-1">
-        {dayOptions.map((value) => (
-          <button
-            key={value}
-            type="button"
-            onClick={() => setDate(value)}
-            className={`min-w-[5.4rem] rounded-2xl border px-3 py-3 text-left text-sm ${
-              value === date ? "border-gold bg-gold text-paper" : "border-line bg-paper"
-            }`}
-          >
-            <span className="block font-semibold">{formatLondonDay(value)}</span>
-            <span className="block text-xs opacity-80">
-              {data?.closedDates.includes(value)
-                ? "Closed"
-                : `${data?.bookings.filter((booking) => booking.date === value && booking.status !== "cancelled").length ?? 0} in`}
-            </span>
-          </button>
-        ))}
-      </div>
+        <div className="mt-8 flex gap-2 overflow-x-auto pb-1">
+          {dayOptions.map((value) => {
+            const count = (data?.bookings ?? []).filter(
+              (booking) => booking.date === value && booking.status !== "cancelled",
+            ).length;
+            const money = moneyFor(data?.bookings ?? [], value);
+            return (
+              <button
+                key={value}
+                type="button"
+                onClick={() => {
+                  setDate(value);
+                  setStart("");
+                }}
+                className={`min-w-[6.2rem] rounded-2xl border px-3 py-3 text-left text-sm ${
+                  value === date
+                    ? "border-gold bg-gold text-paper"
+                    : "border-white/10 bg-white/5 text-cream"
+                }`}
+              >
+                <span className="block font-semibold">{formatLondonDay(value)}</span>
+                <span className="block text-xs opacity-75">
+                  {data?.closedDates.includes(value)
+                    ? "Closed"
+                    : `${count} · ${formatPounds(money)}`}
+                </span>
+              </button>
+            );
+          })}
+        </div>
 
-      <div className="mt-4 flex flex-wrap gap-3">
-        <button
-          type="button"
-          className="btn btn-ghost"
-          disabled={busy}
-          onClick={() => postChange({ type: dayClosed ? "open" : "close", date })}
-        >
-          {dayClosed ? "Open this day" : "Close this day"}
-        </button>
-      </div>
-
-      <section className="mt-8">
-        <h2 className="font-display text-3xl">Appointments</h2>
-        {dayBookings.length === 0 ? (
-          <p className="mt-3 text-muted">Nothing written in for this day yet.</p>
-        ) : (
-          <ul className="mt-4 space-y-3">
-            {dayBookings.map((booking) => (
-              <li key={booking.id} className="card p-5">
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div>
-                    <p className="font-semibold">
-                      {booking.start}–{booking.end} · {booking.serviceName}
-                    </p>
-                    <p className="mt-1">
-                      {booking.status === "blocked"
-                        ? booking.notes || "Busy"
-                        : booking.customerName}
-                    </p>
-                    {booking.customerPhone ? (
-                      <a className="mt-1 inline-block text-teal" href={`tel:${booking.customerPhone}`}>
-                        {displayPhone(booking.customerPhone)}
-                      </a>
-                    ) : null}
-                    <p className="mt-1 text-sm text-muted">
-                      {booking.status}
-                      {booking.source === "online" ? " · booked online" : " · added by Yusuf"}
-                    </p>
-                  </div>
-                  {booking.status === "booked" || booking.status === "blocked" ? (
-                    <div className="flex flex-wrap gap-2">
-                      {booking.status === "booked" ? (
-                        <button
-                          type="button"
-                          className="btn btn-ink"
-                          disabled={busy}
-                          onClick={() => setStatus(booking.id, "done")}
-                        >
-                          Done
-                        </button>
-                      ) : null}
+        <section className="mt-8 overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/5">
+          <div className="border-b border-white/10 px-5 py-4">
+            <h2 className="font-display text-3xl text-cream">Day board</h2>
+            <p className="mt-1 text-sm text-cream/55">
+              Tap a free time, then tap Cut, Fade, Wash, Shave or Busy. Name is optional.
+            </p>
+          </div>
+          {board.length === 0 ? (
+            <p className="px-5 py-8 text-cream/55">The chair is closed this day.</p>
+          ) : (
+            <ul>
+              {board.map((cell) => {
+                const selected = start === cell.start && !cell.booking;
+                return (
+                  <li key={cell.start} className="border-t border-white/8">
+                    {cell.booking ? (
+                      <div className="flex w-full items-stretch text-left">
+                        <span className="w-20 shrink-0 px-4 py-3 text-sm text-cream/50">
+                          {cell.continuation ? "" : cell.start}
+                        </span>
+                        <span className="flex min-w-0 flex-1 items-center justify-between gap-3 px-4 py-3">
+                          <span>
+                            <span className="block font-semibold text-cream">
+                              {cell.continuation
+                                ? ""
+                                : cell.booking.status === "blocked"
+                                  ? cell.booking.notes || "Busy"
+                                  : cell.booking.customerName}
+                            </span>
+                            {cell.continuation ? null : (
+                              <span className="block text-sm text-cream/55">
+                                {cell.booking.start}–{cell.booking.end} · {cell.booking.serviceName}
+                                {cell.booking.status === "booked" || cell.booking.status === "done"
+                                  ? ` · ${formatPounds(bookingPence(cell.booking))}`
+                                  : ""}
+                                {cell.booking.customerPhone
+                                  ? ` · ${displayPhone(cell.booking.customerPhone)}`
+                                  : ""}
+                              </span>
+                            )}
+                          </span>
+                          {cell.continuation ||
+                          (cell.booking.status !== "booked" && cell.booking.status !== "blocked") ? null : (
+                            <span className="flex shrink-0 gap-2">
+                              {cell.booking.status === "booked" ? (
+                                <button
+                                  type="button"
+                                  className="rounded-full bg-cream px-3 py-1 text-xs font-semibold text-ink"
+                                  onClick={() => setStatus(cell.booking!.id, "done")}
+                                >
+                                  Done
+                                </button>
+                              ) : null}
+                              <button
+                                type="button"
+                                className="rounded-full border border-white/20 px-3 py-1 text-xs font-semibold text-cream"
+                                onClick={() => setStatus(cell.booking!.id, "cancelled")}
+                              >
+                                Free
+                              </button>
+                            </span>
+                          )}
+                        </span>
+                      </div>
+                    ) : (
                       <button
                         type="button"
-                        className="btn btn-ghost"
-                        disabled={busy}
-                        onClick={() => setStatus(booking.id, "cancelled")}
+                        onClick={() => setStart(cell.start)}
+                        className={`flex w-full items-stretch text-left ${
+                          selected ? "bg-gold/15" : ""
+                        }`}
                       >
-                        Cancel
+                        <span className="w-20 shrink-0 px-4 py-3 text-sm text-cream/50">
+                          {cell.start}
+                        </span>
+                        <span className="flex flex-1 items-center px-4 py-3 text-sm text-gold-soft">
+                          {selected ? "Selected · tap a job below" : "Free"}
+                        </span>
                       </button>
-                    </div>
-                  ) : null}
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
 
-      <form
-        className="card mt-8 grid gap-4 p-6"
-        onSubmit={(event) => {
-          event.preventDefault();
-          postChange({
-            type: "booking",
-            date,
-            start,
-            serviceId,
-            name,
-            phone,
-            notes,
-          });
-        }}
-      >
-        <h2 className="font-display text-3xl">Add a walk-in</h2>
-        <div className="grid gap-4 md:grid-cols-2">
-          <label className="text-sm">
-            <span className="text-muted">Time</span>
-            <input
-              value={start}
-              onChange={(event) => setStart(event.target.value)}
-              className="mt-2 w-full rounded-xl border border-line bg-cream px-4 py-3"
-              placeholder="10:00"
-            />
-          </label>
-          <label className="text-sm">
-            <span className="text-muted">Service</span>
-            <select
-              value={serviceId}
-              onChange={(event) => setServiceId(event.target.value)}
-              className="mt-2 w-full rounded-xl border border-line bg-cream px-4 py-3"
-            >
-              {(data?.services ?? []).map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
+        <section className="mt-8">
+          <h2 className="font-display text-3xl text-cream">What’s booked</h2>
+          {dayBookings.length === 0 ? (
+            <p className="mt-3 text-cream/55">Nothing written in yet.</p>
+          ) : (
+            <ul className="mt-4 space-y-2">
+              {dayBookings.map((booking) => (
+                <li
+                  key={booking.id}
+                  className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3"
+                >
+                  <p className="text-cream">
+                    <span className="font-semibold">
+                      {booking.start}–{booking.end}
+                    </span>
+                    {" · "}
+                    {booking.status === "blocked" ? booking.notes || "Busy" : booking.customerName}
+                    {" · "}
+                    {booking.serviceName}
+                    {booking.status !== "blocked" ? ` · ${formatPounds(bookingPence(booking))}` : ""}
+                  </p>
+                  <p className="text-sm text-cream/45">
+                    {booking.status}
+                    {booking.source === "online" ? " · online" : " · walk-in"}
+                  </p>
+                </li>
               ))}
-            </select>
-          </label>
-          <label className="text-sm">
-            <span className="text-muted">Name</span>
-            <input
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-              required
-              className="mt-2 w-full rounded-xl border border-line bg-cream px-4 py-3"
-            />
-          </label>
-          <label className="text-sm">
-            <span className="text-muted">Mobile (optional)</span>
-            <input
-              value={phone}
-              onChange={(event) => setPhone(event.target.value)}
-              className="mt-2 w-full rounded-xl border border-line bg-cream px-4 py-3"
-            />
-          </label>
-        </div>
-        <button type="submit" className="btn btn-gold" disabled={busy}>
-          Add to the book
-        </button>
-      </form>
+            </ul>
+          )}
+        </section>
 
-      <form
-        className="card mt-5 grid gap-4 p-6"
-        onSubmit={(event) => {
-          event.preventDefault();
-          postChange({
-            type: "block",
-            date,
-            start,
-            minutes: blockMinutes,
-            notes: notes || "Busy",
-          });
-        }}
-      >
-        <h2 className="font-display text-3xl">Block a time</h2>
-        <p className="text-sm text-muted">
-          Use this for lunch, a break, or a walk-in you do not want shown as free.
+        {error ? <p className="mt-6 font-semibold text-gold-soft">{error}</p> : null}
+
+        <p className="mt-10 text-sm text-cream/40">
+          Customers book on the{" "}
+          <a className="text-gold-soft" href="/barber#book">
+            Cut page
+          </a>
+          . WhatsApp {site.phoneDisplay}.
         </p>
-        <div className="grid gap-4 md:grid-cols-2">
-          <label className="text-sm">
-            <span className="text-muted">From</span>
+      </div>
+
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-ink-deep/95 px-4 py-3 backdrop-blur md:px-8">
+        <div className="mx-auto flex max-w-6xl flex-col gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="text-sm text-cream/70">
+              {start ? `From ${start}` : "Next free slot"}
+              {walkInName ? ` · ${walkInName}` : " · Walk-in"}
+            </p>
             <input
-              value={start}
-              onChange={(event) => setStart(event.target.value)}
-              className="mt-2 w-full rounded-xl border border-line bg-cream px-4 py-3"
+              value={walkInName}
+              onChange={(event) => setWalkInName(event.target.value)}
+              className="min-w-[8rem] flex-1 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-cream outline-none md:max-w-xs"
+              placeholder="Name optional"
             />
-          </label>
-          <label className="text-sm">
-            <span className="text-muted">Length</span>
-            <select
-              value={blockMinutes}
-              onChange={(event) => setBlockMinutes(Number(event.target.value))}
-              className="mt-2 w-full rounded-xl border border-line bg-cream px-4 py-3"
-            >
-              <option value={30}>30 minutes</option>
-              <option value={60}>1 hour</option>
-              <option value={90}>90 minutes</option>
-            </select>
-          </label>
+          </div>
+          <div className="flex gap-2 overflow-x-auto pb-1">
+            {quickChairActions.map((action) => (
+              <button
+                key={action.label}
+                type="button"
+                disabled={busy}
+                onClick={() => runQuick(action)}
+                className={`shrink-0 rounded-full px-4 py-2.5 text-sm font-semibold ${
+                  action.kind === "block"
+                    ? "border border-white/20 text-cream"
+                    : "bg-gold text-paper"
+                }`}
+              >
+                {action.label}
+                <span className="ml-2 text-xs opacity-75">{action.hint}</span>
+              </button>
+            ))}
+          </div>
         </div>
-        <label className="text-sm">
-          <span className="text-muted">Note</span>
-          <input
-            value={notes}
-            onChange={(event) => setNotes(event.target.value)}
-            className="mt-2 w-full rounded-xl border border-line bg-cream px-4 py-3"
-            placeholder="Lunch"
-          />
-        </label>
-        <button type="submit" className="btn btn-ink" disabled={busy}>
-          Block this time
-        </button>
-      </form>
+      </div>
+    </div>
+  );
+}
 
-      {error ? <p className="mt-5 font-semibold text-teal">{error}</p> : null}
-
-      <p className="mt-10 text-sm text-muted">
-        Customers book on the{" "}
-        <a className="font-semibold text-teal" href="/barber#book">
-          Cut page
-        </a>
-        . WhatsApp remains {site.phoneDisplay}.
-      </p>
+function Stat({
+  label,
+  value,
+  detail,
+}: {
+  label: string;
+  value: string;
+  detail: string;
+}) {
+  return (
+    <div className="rounded-[1.4rem] border border-white/10 bg-white/5 px-5 py-4">
+      <p className="text-sm text-cream/50">{label}</p>
+      <p className="mt-1 font-display text-4xl text-cream">{value}</p>
+      <p className="mt-1 text-sm text-cream/55">{detail}</p>
     </div>
   );
 }

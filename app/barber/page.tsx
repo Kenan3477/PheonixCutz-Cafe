@@ -23,9 +23,7 @@ export default function BarberPage() {
         </p>
       </div>
       <ChairBand />
-      <div className="bg-cream py-8">
-        <BookChair />
-      </div>
+      <BookChair />
     </div>
   );
 }

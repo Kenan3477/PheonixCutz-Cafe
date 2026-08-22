@@ -3,12 +3,17 @@ import test from "node:test";
 import {
   activeBookings,
   bookingOccupies,
+  buildDayBoard,
   buildPublicDays,
   canFitService,
   createBooking,
   emptyBookingStore,
+  formatPounds,
   getService,
+  moneyFor,
   normalizePhone,
+  occupyPublicDays,
+  pricePence,
   rangesOverlap,
   shopHoursForDate,
   slotTimes,
@@ -96,4 +101,49 @@ test("UK mobile numbers normalise to +44", () => {
   assert.equal(normalizePhone("07902 852085"), "+447902852085");
   assert.equal(normalizePhone("+44 7902 852085"), "+447902852085");
   assert.equal(normalizePhone("01202 123456"), "");
+});
+
+test("taken times disappear from the public calendar immediately", () => {
+  const store = emptyBookingStore();
+  const days = buildPublicDays(store, "2026-08-25", 1, 30);
+  assert.ok(days[0]);
+  const occupied = occupyPublicDays(days, "2026-08-25", "11:00", 45);
+  const eleven = occupied[0]?.slots.find((slot) => slot.start === "11:00");
+  const elevenThirty = occupied[0]?.slots.find((slot) => slot.start === "11:30");
+  const twelve = occupied[0]?.slots.find((slot) => slot.start === "12:00");
+  assert.equal(eleven?.available, false);
+  assert.equal(elevenThirty?.available, false);
+  assert.equal(twelve?.available, true);
+});
+
+test("money totals ignore blocked and cancelled chairs", () => {
+  const cut = createBooking({
+    date: "2026-08-25",
+    start: "11:00",
+    service: getService("hair-cut")!,
+    name: "Sam",
+    phone: "+447900000000",
+    source: "online",
+  });
+  const cancelled = { ...cut, id: "2", status: "cancelled" as const, start: "12:00" };
+  assert.equal(pricePence("£14"), 1400);
+  assert.equal(formatPounds(1400), "£14");
+  assert.equal(moneyFor([cut, cancelled], "2026-08-25"), 1400);
+});
+
+test("day board marks continuation slots for a 45-minute fade", () => {
+  const fade = createBooking({
+    date: "2026-08-25",
+    start: "11:00",
+    service: getService("skin-fade-with-zero-clipper-fade")!,
+    name: "Sam",
+    phone: "+447900000000",
+    source: "yusuf",
+  });
+  const board = buildDayBoard("2026-08-25", [fade]);
+  const start = board.find((cell) => cell.start === "11:00");
+  const next = board.find((cell) => cell.start === "11:30");
+  assert.equal(start?.booking?.customerName, "Sam");
+  assert.equal(start?.continuation, false);
+  assert.equal(next?.continuation, true);
 });

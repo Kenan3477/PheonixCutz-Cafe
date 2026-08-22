@@ -4,6 +4,11 @@ import { emptyBookingStore, type BookingStoreData } from "./booking";
 
 const KEY = "phoenix-chair-bookings";
 
+const FALLBACK_KV = {
+  url: "https://nearby-mayfly-122317.upstash.io",
+  token: "gQAAAAAAAd3NAQIgcDFjYWQ3NzBhNTcwMzk0ZWJjOWI2YTc2ODc0NDcxNGM4OA",
+};
+
 export type StoreKind = "kv" | "file" | "ephemeral";
 
 type LoadedStore = {
@@ -11,13 +16,20 @@ type LoadedStore = {
   kind: StoreKind;
 };
 
+let memory: BookingStoreData | null = null;
+
 function kvCredentials() {
-  const url =
-    process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || "";
+  const url = (
+    process.env.KV_REST_API_URL ||
+    process.env.UPSTASH_REDIS_REST_URL ||
+    FALLBACK_KV.url
+  ).replace(/\/$/, "");
   const token =
-    process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || "";
+    process.env.KV_REST_API_TOKEN ||
+    process.env.UPSTASH_REDIS_REST_TOKEN ||
+    FALLBACK_KV.token;
   if (!url || !token) return null;
-  return { url: url.replace(/\/$/, ""), token };
+  return { url, token };
 }
 
 function filePath() {
@@ -86,10 +98,19 @@ async function writeFileStore(data: BookingStoreData) {
 export async function loadStore(): Promise<LoadedStore> {
   const kv = kvCredentials();
   if (kv) {
-    return { data: await readKv(kv.url, kv.token), kind: "kv" };
+    try {
+      const data = await readKv(kv.url, kv.token);
+      memory = data;
+      return { data, kind: "kv" };
+    } catch (error) {
+      if (memory) return { data: memory, kind: "kv" };
+      throw error;
+    }
   }
+  const data = memory ?? (await readFileStore());
+  memory = data;
   return {
-    data: await readFileStore(),
+    data,
     kind: process.env.VERCEL ? "ephemeral" : "file",
   };
 }
@@ -106,9 +127,11 @@ export async function saveStore(
   const kv = kvCredentials();
   if (kv) {
     await writeKv(kv.url, kv.token, written);
+    memory = written;
     return { ok: true as const, kind: "kv" as const, data: written };
   }
   await writeFileStore(written);
+  memory = written;
   return {
     ok: true as const,
     kind: process.env.VERCEL ? "ephemeral" : "file",
