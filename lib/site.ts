@@ -23,7 +23,7 @@ export const site = {
     mapsUrl:
       "https://www.google.com/maps/search/?api=1&query=493+Wimborne+Road+Bournemouth+BH9+2AW",
     embedUrl:
-      "https://maps.google.com/maps?q=493%20Wimborne%20Road%2C%20Bournemouth%20BH9%202AW&z=16&output=embed",
+      "https://www.openstreetmap.org/export/embed.html?bbox=-1.883121%2C50.741829%2C-1.873121%2C50.747829&layer=mapnik&marker=50.744829%2C-1.878121",
   },
   phoneDisplay: "07902 852085",
   phoneTel: "+447902852085",

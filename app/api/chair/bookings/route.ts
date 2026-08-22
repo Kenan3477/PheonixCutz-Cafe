@@ -29,7 +29,7 @@ export async function GET() {
 
   const { data, kind } = await loadStore();
   const today = londonNow().isoDate;
-  const horizon = addDaysToIsoDate(today, 28);
+  const horizon = addDaysToIsoDate(today, 70);
   const bookings = data.bookings
     .filter((booking) => booking.date >= addDaysToIsoDate(today, -2) && booking.date <= horizon)
     .sort((a, b) => `${a.date}${a.start}`.localeCompare(`${b.date}${b.start}`));
@@ -227,7 +227,7 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "Send the change as JSON." }, { status: 400 });
   }
 
-  if (!body.id || (body.status !== "cancelled" && body.status !== "done")) {
+  if (!body.id || (body.status !== "cancelled" && body.status !== "done" && body.status !== "deleted")) {
     return NextResponse.json({ error: "Say which booking to update." }, { status: 400 });
   }
 
@@ -237,6 +237,12 @@ export async function PATCH(request: Request) {
   const saved = await updateStore((store) => {
     const index = store.bookings.findIndex((booking) => booking.id === bookingId);
     if (index === -1) return { error: "That booking is not in the book." };
+    if (nextStatus === "deleted" || nextStatus === "cancelled") {
+      return {
+        ...store,
+        bookings: store.bookings.filter((booking) => booking.id !== bookingId),
+      };
+    }
     const bookings = store.bookings.slice();
     bookings[index] = { ...bookings[index]!, status: nextStatus };
     return { ...store, bookings };

@@ -379,13 +379,21 @@ export function VisitBand() {
               sizes="(min-width: 1024px) 50vw, 100vw"
             />
           </div>
-          <iframe
-            title="Map of Phoenix Cutz & Cafe on Wimborne Road"
-            src={site.address.embedUrl}
-            className="h-full min-h-[280px] w-full border-0"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
+          <div className="relative min-h-[280px] bg-cream-2">
+            <iframe
+              title="Map of Phoenix Cutz & Cafe on Wimborne Road"
+              src={site.address.embedUrl}
+              className="absolute inset-0 h-full w-full border-0"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+            <a
+              href={site.address.mapsUrl}
+              className="absolute bottom-3 right-3 rounded-full bg-ink px-3 py-1.5 text-xs font-semibold text-cream"
+            >
+              Open in Google Maps
+            </a>
+          </div>
         </div>
       </div>
     </section>

@@ -1,7 +1,9 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import { DateWeekSlider } from "@/components/DateWeekSlider";
 import {
+  BOOKING_HORIZON_DAYS,
   bookingPence,
   buildDayBoard,
   displayPhone,
@@ -13,7 +15,7 @@ import {
   type ChairService,
   type QuickChairAction,
 } from "@/lib/booking";
-import { addDaysToIsoDate, formatLondonDay, formatLondonLongDay } from "@/lib/london";
+import { addDaysToIsoDate, formatLondonLongDay } from "@/lib/london";
 import { site } from "@/lib/site";
 
 type DeskPayload = {
@@ -69,7 +71,9 @@ export function ChairDesk() {
   }, []);
 
   const dayOptions = data
-    ? Array.from({ length: 14 }, (_, index) => addDaysToIsoDate(data.today, index))
+    ? Array.from({ length: BOOKING_HORIZON_DAYS }, (_, index) =>
+        addDaysToIsoDate(data.today, index),
+      )
     : [];
   const weekDates = dayOptions.slice(0, 7);
   const dayClosed = Boolean(data?.closedDates.includes(date));
@@ -157,7 +161,7 @@ export function ChairDesk() {
     });
   }
 
-  async function setStatus(id: string, status: "cancelled" | "done") {
+  async function setStatus(id: string, status: "cancelled" | "done" | "deleted") {
     setBusy(true);
     setError("");
     try {
@@ -262,35 +266,23 @@ export function ChairDesk() {
           />
         </div>
 
-        <div className="mt-8 flex gap-2 overflow-x-auto pb-1">
-          {dayOptions.map((value) => {
-            const count = (data?.bookings ?? []).filter(
-              (booking) => booking.date === value && booking.status !== "cancelled",
-            ).length;
-            const money = moneyFor(data?.bookings ?? [], value);
-            return (
-              <button
-                key={value}
-                type="button"
-                onClick={() => {
-                  setDate(value);
-                  setStart("");
-                }}
-                className={`min-w-[6.2rem] rounded-2xl border px-3 py-3 text-left text-sm ${
-                  value === date
-                    ? "border-gold bg-gold text-paper"
-                    : "border-white/10 bg-white/5 text-cream"
-                }`}
-              >
-                <span className="block font-semibold">{formatLondonDay(value)}</span>
-                <span className="block text-xs opacity-75">
-                  {data?.closedDates.includes(value)
-                    ? "Closed"
-                    : `${count} · ${formatPounds(money)}`}
-                </span>
-              </button>
-            );
-          })}
+        <div className="mt-8">
+          <DateWeekSlider
+            dark
+            dates={dayOptions}
+            selected={date}
+            onSelect={(value) => {
+              setDate(value);
+              setStart("");
+            }}
+            closed={(value) => Boolean(data?.closedDates.includes(value))}
+            meta={(value) => {
+              const count = (data?.bookings ?? []).filter(
+                (booking) => booking.date === value && booking.status !== "cancelled",
+              ).length;
+              return `${count} · ${formatPounds(moneyFor(data?.bookings ?? [], value))}`;
+            }}
+          />
         </div>
 
         <section className="mt-8 overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/5">
@@ -334,8 +326,7 @@ export function ChairDesk() {
                               </span>
                             )}
                           </span>
-                          {cell.continuation ||
-                          (cell.booking.status !== "booked" && cell.booking.status !== "blocked") ? null : (
+                          {cell.continuation ? null : (
                             <span className="flex shrink-0 gap-2">
                               {cell.booking.status === "booked" ? (
                                 <button
@@ -349,9 +340,9 @@ export function ChairDesk() {
                               <button
                                 type="button"
                                 className="rounded-full border border-white/20 px-3 py-1 text-xs font-semibold text-cream"
-                                onClick={() => setStatus(cell.booking!.id, "cancelled")}
+                                onClick={() => setStatus(cell.booking!.id, "deleted")}
                               >
-                                Free
+                                Remove
                               </button>
                             </span>
                           )}
@@ -401,10 +392,19 @@ export function ChairDesk() {
                     {booking.serviceName}
                     {booking.status !== "blocked" ? ` · ${formatPounds(bookingPence(booking))}` : ""}
                   </p>
-                  <p className="text-sm text-cream/45">
-                    {booking.status}
-                    {booking.source === "online" ? " · online" : " · walk-in"}
-                  </p>
+                  <div className="flex items-center gap-3">
+                    <p className="text-sm text-cream/45">
+                      {booking.status}
+                      {booking.source === "online" ? " · online" : " · walk-in"}
+                    </p>
+                    <button
+                      type="button"
+                      className="rounded-full border border-white/20 px-3 py-1 text-xs font-semibold text-cream"
+                      onClick={() => setStatus(booking.id, "deleted")}
+                    >
+                      Remove
+                    </button>
+                  </div>
                 </li>
               ))}
             </ul>

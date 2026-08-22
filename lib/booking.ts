@@ -8,7 +8,7 @@ import {
 } from "./london";
 
 export const SLOT_MINUTES = 30;
-export const BOOKING_HORIZON_DAYS = 14;
+export const BOOKING_HORIZON_DAYS = 56;
 export const MIN_NOTICE_MINUTES = 20;
 
 const SERVICE_MINUTES: Record<string, number> = {

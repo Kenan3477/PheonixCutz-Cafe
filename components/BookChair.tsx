@@ -7,6 +7,7 @@ import {
   type ChairService,
   type PublicDay,
 } from "@/lib/booking";
+import { DateWeekSlider } from "@/components/DateWeekSlider";
 import { formatLondonDay, formatLondonLongDay } from "@/lib/london";
 import { site } from "@/lib/site";
 
@@ -186,34 +187,22 @@ export function BookChair() {
 
           <div>
             <p className="text-sm text-cream/70">Day</p>
-            <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
-              {days.map((day) => {
-                const free = day.slots.filter((slot) => slot.available).length;
-                const selected = day.date === date;
-                return (
-                  <button
-                    key={day.date}
-                    type="button"
-                    disabled={day.closed}
-                    onClick={() => {
-                      setDate(day.date);
-                      setStart("");
-                    }}
-                    className={`min-w-[5.4rem] rounded-2xl border px-3 py-3 text-left text-sm ${
-                      selected
-                        ? "border-gold bg-gold text-paper"
-                        : day.closed
-                          ? "cursor-not-allowed border-white/5 bg-white/5 text-cream/30"
-                          : "border-white/10 bg-white/5 text-cream"
-                    }`}
-                  >
-                    <span className="block font-semibold">{formatLondonDay(day.date)}</span>
-                    <span className="block text-xs opacity-75">
-                      {day.closed ? "Closed" : `${free} free`}
-                    </span>
-                  </button>
-                );
-              })}
+            <div className="mt-3">
+              <DateWeekSlider
+                dark
+                dates={days.map((day) => day.date)}
+                selected={date}
+                onSelect={(value) => {
+                  setDate(value);
+                  setStart("");
+                }}
+                closed={(value) => Boolean(days.find((day) => day.date === value)?.closed)}
+                meta={(value) => {
+                  const day = days.find((item) => item.date === value);
+                  const free = day?.slots.filter((slot) => slot.available).length ?? 0;
+                  return `${free} free`;
+                }}
+              />
             </div>
           </div>
         </div>
