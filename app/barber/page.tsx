@@ -5,7 +5,7 @@ import { ChairBand } from "@/components/Sections";
 export const metadata: Metadata = {
   title: "Haircuts and prices",
   description:
-    "Phoenix Turkish Barber price list at 493 Wimborne Road, Winton. Haircuts, wet shaves, kids cuts and the Phoenix Special.",
+    "Phoenix Turkish Barber at 493 Wimborne Road, Winton. Haircuts, wet shaves, kids cuts and the Phoenix Special. Complimentary Turkish tea, and a lollipop for the kids.",
 };
 
 export default function BarberPage() {
@@ -18,8 +18,9 @@ export default function BarberPage() {
         </h1>
         <p className="mt-4 max-w-2xl text-muted">
           Book a free slot below — you can see when I am free. Walk-ins are
-          still welcome if a chair is free. We take cash and card at the cafe;
-          ask at the chair if you want to pay by card for a cut.
+          still welcome if a chair is free. Complimentary Turkish tea while
+          you wait, and a lollipop for the kids. We take cash and card at the
+          cafe; ask at the chair if you want to pay by card for a cut.
         </p>
       </div>
       <ChairBand />

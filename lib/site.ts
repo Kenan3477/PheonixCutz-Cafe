@@ -61,7 +61,8 @@ export const site = {
     },
     {
       title: "Kids are welcome",
-      detail: "Kids’ cuts from £9, and we are used to family tables.",
+      detail:
+        "Kids’ cuts from £9. We keep lollipops for them, and we are used to family tables.",
     },
     {
       title: "Easy to reach",
@@ -83,7 +84,7 @@ export const site = {
     },
     {
       q: "Is it good for children?",
-      a: "Yes. We do kids’ haircuts, and families use the lime booths all the time.",
+      a: "Yes. We do kids’ haircuts, keep lollipops for them, and families use the lime booths all the time.",
     },
     {
       q: "What about allergies or prices on the food?",
@@ -424,7 +425,7 @@ export const kitchen = {
 
 export const chair = {
   intro:
-    "Traditional Turkish work with a British finish. Coffee while you wait.",
+    "Traditional Turkish work with a British finish. Complimentary Turkish tea while you wait, and a lollipop for the kids.",
   specialNote:
     "The Phoenix Special includes a hot wax, ear flame, hot towel, face mask and more.",
   groups: [
@@ -480,7 +481,7 @@ export const reviews = [
   },
   {
     quote:
-      "Coffee in the chair, kids welcome, and sometimes a short wait when we are busy.",
+      "Turkish tea in the chair, lollipops for the kids, and sometimes a short wait when we are busy.",
     source: "How we work",
   },
 ] as const;

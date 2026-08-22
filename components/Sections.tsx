@@ -80,7 +80,8 @@ export function DualStory() {
           <h2 className="mt-2 font-display text-4xl">The barber</h2>
           <p className="mt-3 text-muted">
             Skin fades, wet shaves, kids’ cuts, and the Phoenix Special with
-            hot towel and face mask. Coffee while you wait.
+            hot towel and face mask. Complimentary Turkish tea while you wait,
+            and a lollipop for the kids.
           </p>
           <Link href="/barber" className="mt-5 inline-flex font-semibold text-teal">
             See prices and book →
