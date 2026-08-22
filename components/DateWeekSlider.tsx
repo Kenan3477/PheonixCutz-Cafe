@@ -9,6 +9,7 @@ export function DateWeekSlider({
   meta,
   dark = false,
   closed,
+  lockClosed = true,
 }: {
   dates: string[];
   selected: string;
@@ -16,6 +17,7 @@ export function DateWeekSlider({
   meta: (date: string) => string;
   dark?: boolean;
   closed?: (date: string) => boolean;
+  lockClosed?: boolean;
 }) {
   const week = Math.max(0, Math.floor(Math.max(dates.indexOf(selected), 0) / 7));
   const weekCount = Math.max(1, Math.ceil(dates.length / 7));
@@ -29,13 +31,17 @@ export function DateWeekSlider({
     ? {
         selected: "border-gold bg-gold text-paper",
         open: "border-white/10 bg-white/5 text-cream",
-        shut: "cursor-not-allowed border-white/5 bg-white/5 text-cream/30",
+        shut: lockClosed
+          ? "cursor-not-allowed border-white/5 bg-white/5 text-cream/30"
+          : "border-white/15 bg-white/5 text-cream/70",
         arrow: "border-white/15 text-cream",
       }
     : {
         selected: "border-gold bg-gold text-paper",
         open: "border-line bg-paper text-ink",
-        shut: "cursor-not-allowed border-line bg-cream text-muted",
+        shut: lockClosed
+          ? "cursor-not-allowed border-line bg-cream text-muted"
+          : "border-line bg-cream text-muted",
         arrow: "border-line text-ink",
       };
 
@@ -43,7 +49,9 @@ export function DateWeekSlider({
     const nextWeek = week + delta;
     if (nextWeek < 0 || nextWeek >= weekCount) return;
     const nextSlice = dates.slice(nextWeek * 7, nextWeek * 7 + 7);
-    const pick = nextSlice.find((value) => !closed?.(value)) ?? nextSlice[0];
+    const pick = lockClosed
+      ? (nextSlice.find((value) => !closed?.(value)) ?? nextSlice[0])
+      : nextSlice[0];
     if (pick) onSelect(pick);
   }
 
@@ -80,7 +88,7 @@ export function DateWeekSlider({
             <button
               key={value}
               type="button"
-              disabled={isClosed}
+              disabled={isClosed && lockClosed}
               onClick={() => onSelect(value)}
               className={`min-w-0 rounded-2xl border px-1 py-2.5 text-center text-[0.7rem] leading-tight sm:px-2 sm:text-sm ${
                 isSelected ? chip.selected : isClosed ? chip.shut : chip.open

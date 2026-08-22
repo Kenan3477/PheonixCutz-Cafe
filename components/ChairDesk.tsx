@@ -275,6 +275,7 @@ export function ChairDesk() {
               setDate(value);
               setStart("");
             }}
+            lockClosed={false}
             closed={(value) => Boolean(data?.closedDates.includes(value))}
             meta={(value) => {
               const count = (data?.bookings ?? []).filter(
@@ -289,7 +290,9 @@ export function ChairDesk() {
           <div className="border-b border-white/10 px-5 py-4">
             <h2 className="font-display text-3xl text-cream">Day board</h2>
             <p className="mt-1 text-sm text-cream/55">
-              Tap a free time, then tap Cut, Fade, Wash, Shave or Busy. Name is optional.
+              {dayClosed
+                ? "This day is closed to online booking. Tap Open this day to take bookings again."
+                : "Tap a free time, then tap Cut, Fade, Wash, Shave or Busy. Name is optional."}
             </p>
           </div>
           {board.length === 0 ? (
