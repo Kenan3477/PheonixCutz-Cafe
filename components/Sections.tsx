@@ -110,7 +110,7 @@ export function ShopGallery() {
                 alt={shot.alt}
                 fill
                 className={`object-cover ${
-                  shot.src.includes("shop-front") ? "object-[50%_12%]" : ""
+                  shot.src.includes("shop-front") ? "object-[50%_42%]" : ""
                 }`}
                 sizes={shot.wide ? "100vw" : "(min-width: 768px) 50vw, 100vw"}
               />
