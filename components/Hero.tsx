@@ -11,7 +11,7 @@ export function Hero() {
         alt="Phoenix Turkish Barber by Yusuf and the cafe at 493 Wimborne Road, Winton"
         fill
         priority
-        className="object-cover object-[50%_12%]"
+        className="object-cover object-[50%_34%]"
         sizes="100vw"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-ink-deep via-ink-deep/50 to-transparent" />
