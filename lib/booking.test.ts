@@ -49,7 +49,7 @@ test("a 45-minute cut needs the next slot free", () => {
   const service = getService("skin-fade-with-zero-clipper-fade");
   assert.ok(service);
   const existing = createBooking({
-    date: "2026-08-25",
+    date: "2026-09-15",
     start: "10:00",
     service: getService("hair-cut")!,
     name: "Sam",
@@ -57,7 +57,7 @@ test("a 45-minute cut needs the next slot free", () => {
     source: "yusuf",
   });
   const clash = canFitService({
-    isoDate: "2026-08-25",
+    isoDate: "2026-09-15",
     start: "09:30",
     minutes: service.minutes,
     bookings: [existing],
@@ -66,7 +66,7 @@ test("a 45-minute cut needs the next slot free", () => {
   assert.equal(clash.ok, false);
 
   const free = canFitService({
-    isoDate: "2026-08-25",
+    isoDate: "2026-09-15",
     start: "11:00",
     minutes: service.minutes,
     bookings: [existing],
@@ -106,9 +106,9 @@ test("UK mobile numbers normalise to +44", () => {
 
 test("taken times disappear from the public calendar immediately", () => {
   const store = emptyBookingStore();
-  const days = buildPublicDays(store, "2026-08-25", 1, 30);
+  const days = buildPublicDays(store, "2026-09-15", 1, 30);
   assert.ok(days[0]);
-  const occupied = occupyPublicDays(days, "2026-08-25", "11:00", 45);
+  const occupied = occupyPublicDays(days, "2026-09-15", "11:00", 45);
   const eleven = occupied[0]?.slots.find((slot) => slot.start === "11:00");
   const elevenThirty = occupied[0]?.slots.find((slot) => slot.start === "11:30");
   const twelve = occupied[0]?.slots.find((slot) => slot.start === "12:00");
@@ -180,4 +180,11 @@ test("day board marks continuation slots for a 45-minute fade", () => {
   assert.equal(start?.booking?.customerName, "Sam");
   assert.equal(start?.continuation, false);
   assert.equal(next?.continuation, true);
+});
+
+test("the diary opens even when remote storage is missing", async () => {
+  const { loadStore } = await import("./booking-store");
+  const store = await loadStore();
+  assert.ok(Array.isArray(store.data.bookings));
+  assert.ok(Array.isArray(store.data.closedDates));
 });

@@ -27,21 +27,28 @@ export async function GET() {
   const denied = await requireChair();
   if (denied) return denied;
 
-  const { data, kind } = await loadStore();
-  const today = londonNow().isoDate;
-  const horizon = addDaysToIsoDate(today, 70);
-  const bookings = data.bookings
-    .filter((booking) => booking.date >= addDaysToIsoDate(today, -2) && booking.date <= horizon)
-    .sort((a, b) => `${a.date}${a.start}`.localeCompare(`${b.date}${b.start}`));
+  try {
+    const { data, kind } = await loadStore();
+    const today = londonNow().isoDate;
+    const horizon = addDaysToIsoDate(today, 70);
+    const bookings = data.bookings
+      .filter((booking) => booking.date >= addDaysToIsoDate(today, -2) && booking.date <= horizon)
+      .sort((a, b) => `${a.date}${a.start}`.localeCompare(`${b.date}${b.start}`));
 
-  return NextResponse.json({
-    bookings,
-    closedDates: data.closedDates,
-    services: chairServices,
-    store: kind,
-    storeLabel: storeLabel(kind),
-    today,
-  });
+    return NextResponse.json({
+      bookings,
+      closedDates: data.closedDates,
+      services: chairServices,
+      store: kind,
+      storeLabel: storeLabel(kind),
+      today,
+    });
+  } catch {
+    return NextResponse.json(
+      { error: "Could not open the diary. Try again." },
+      { status: 500 },
+    );
+  }
 }
 
 export async function POST(request: Request) {

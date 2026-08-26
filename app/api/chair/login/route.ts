@@ -12,29 +12,33 @@ import {
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
-  const ip = clientIp(request);
-  if (!allowLoginAttempt(ip)) {
-    return NextResponse.json(
-      { error: "Too many tries. Wait ten minutes." },
-      { status: 429 },
-    );
-  }
-
-  let password = "";
   try {
-    const body = (await request.json()) as { password?: string };
-    password = body.password ?? "";
+    const ip = clientIp(request);
+    if (!allowLoginAttempt(ip)) {
+      return NextResponse.json(
+        { error: "Too many tries. Wait ten minutes." },
+        { status: 429 },
+      );
+    }
+
+    let password = "";
+    try {
+      const body = (await request.json()) as { password?: string };
+      password = body.password ?? "";
+    } catch {
+      return NextResponse.json({ error: "Send the password as JSON." }, { status: 400 });
+    }
+
+    const ok = verifyChairPassword(password);
+    recordLoginAttempt(ip, ok);
+    if (!ok) {
+      return NextResponse.json({ error: "That password is not right." }, { status: 401 });
+    }
+
+    const response = NextResponse.json({ ok: true });
+    response.cookies.set(chairCookieName(), createChairSession(), await chairCookieOptions());
+    return response;
   } catch {
-    return NextResponse.json({ error: "Send the password as JSON." }, { status: 400 });
+    return NextResponse.json({ error: "Could not sign in. Try again." }, { status: 500 });
   }
-
-  const ok = verifyChairPassword(password);
-  recordLoginAttempt(ip, ok);
-  if (!ok) {
-    return NextResponse.json({ error: "That password is not right." }, { status: 401 });
-  }
-
-  const response = NextResponse.json({ ok: true });
-  response.cookies.set(chairCookieName(), createChairSession(), await chairCookieOptions());
-  return response;
 }

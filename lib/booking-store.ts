@@ -4,11 +4,6 @@ import { emptyBookingStore, type BookingStoreData } from "./booking";
 
 const KEY = "phoenix-chair-bookings";
 
-const FALLBACK_KV = {
-  url: "https://nearby-mayfly-122317.upstash.io",
-  token: "gQAAAAAAAd3NAQIgcDFjYWQ3NzBhNTcwMzk0ZWJjOWI2YTc2ODc0NDcxNGM4OA",
-};
-
 export type StoreKind = "kv" | "file" | "ephemeral";
 
 type LoadedStore = {
@@ -22,12 +17,12 @@ function kvCredentials() {
   const url = (
     process.env.KV_REST_API_URL ||
     process.env.UPSTASH_REDIS_REST_URL ||
-    FALLBACK_KV.url
+    ""
   ).replace(/\/$/, "");
   const token =
     process.env.KV_REST_API_TOKEN ||
     process.env.UPSTASH_REDIS_REST_TOKEN ||
-    FALLBACK_KV.token;
+    "";
   if (!url || !token) return null;
   return { url, token };
 }
@@ -95,6 +90,15 @@ async function writeFileStore(data: BookingStoreData) {
   await writeFile(target, JSON.stringify(data, null, 2), "utf8");
 }
 
+async function localStore(): Promise<LoadedStore> {
+  const data = memory ?? (await readFileStore());
+  memory = data;
+  return {
+    data,
+    kind: process.env.VERCEL ? "ephemeral" : "file",
+  };
+}
+
 export async function loadStore(): Promise<LoadedStore> {
   const kv = kvCredentials();
   if (kv) {
@@ -102,17 +106,12 @@ export async function loadStore(): Promise<LoadedStore> {
       const data = await readKv(kv.url, kv.token);
       memory = data;
       return { data, kind: "kv" };
-    } catch (error) {
+    } catch {
       if (memory) return { data: memory, kind: "kv" };
-      throw error;
+      return localStore();
     }
   }
-  const data = memory ?? (await readFileStore());
-  memory = data;
-  return {
-    data,
-    kind: process.env.VERCEL ? "ephemeral" : "file",
-  };
+  return localStore();
 }
 
 export async function saveStore(
@@ -126,9 +125,18 @@ export async function saveStore(
   const written = { ...next, version: expectedVersion + 1 };
   const kv = kvCredentials();
   if (kv) {
-    await writeKv(kv.url, kv.token, written);
-    memory = written;
-    return { ok: true as const, kind: "kv" as const, data: written };
+    try {
+      await writeKv(kv.url, kv.token, written);
+      memory = written;
+      return { ok: true as const, kind: "kv" as const, data: written };
+    } catch {
+      memory = written;
+      return {
+        ok: true as const,
+        kind: process.env.VERCEL ? "ephemeral" : "file",
+        data: written,
+      };
+    }
   }
   await writeFileStore(written);
   memory = written;
