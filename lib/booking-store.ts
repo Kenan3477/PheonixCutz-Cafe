@@ -1,10 +1,11 @@
 import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
+import { createClient, type RedisClientType } from "redis";
 import { emptyBookingStore, type BookingStoreData } from "./booking";
 
 const KEY = "phoenix-chair-bookings";
 
-export type StoreKind = "kv" | "file" | "ephemeral";
+export type StoreKind = "kv" | "redis" | "file" | "ephemeral";
 
 type LoadedStore = {
   data: BookingStoreData;
@@ -12,6 +13,8 @@ type LoadedStore = {
 };
 
 let memory: BookingStoreData | null = null;
+let redis: RedisClientType | null = null;
+let redisConnecting: Promise<RedisClientType> | null = null;
 
 function kvCredentials() {
   const url = (
@@ -25,6 +28,41 @@ function kvCredentials() {
     "";
   if (!url || !token) return null;
   return { url, token };
+}
+
+function redisUrl() {
+  return (process.env.REDIS_URL || process.env.RAILWAY_REDIS_URL || "").trim();
+}
+
+async function redisClient() {
+  const url = redisUrl();
+  if (!url) return null;
+  if (redis?.isOpen) return redis;
+  if (redisConnecting) return redisConnecting;
+
+  redisConnecting = (async () => {
+    const client = createClient({
+      url,
+      socket: {
+        connectTimeout: 4000,
+        reconnectStrategy: (retries) =>
+          retries > 2 ? false : Math.min(200 * retries, 800),
+      },
+    });
+    client.on("error", () => undefined);
+    await client.connect();
+    redis = client as RedisClientType;
+    return redis;
+  })();
+
+  try {
+    return await redisConnecting;
+  } catch (error) {
+    redis = null;
+    throw error;
+  } finally {
+    redisConnecting = null;
+  }
 }
 
 function filePath() {
@@ -76,6 +114,18 @@ async function writeKv(url: string, token: string, data: BookingStoreData) {
   await kvCommand(url, token, ["SET", KEY, JSON.stringify(data)]);
 }
 
+async function readRedis() {
+  const client = await redisClient();
+  if (!client) throw new Error("Redis is not configured.");
+  return parseStore(await client.get(KEY));
+}
+
+async function writeRedis(data: BookingStoreData) {
+  const client = await redisClient();
+  if (!client) throw new Error("Redis is not configured.");
+  await client.set(KEY, JSON.stringify(data));
+}
+
 async function readFileStore() {
   try {
     return parseStore(await readFile(filePath(), "utf8"));
@@ -100,6 +150,16 @@ async function localStore(): Promise<LoadedStore> {
 }
 
 export async function loadStore(): Promise<LoadedStore> {
+  if (redisUrl()) {
+    try {
+      const data = await readRedis();
+      memory = data;
+      return { data, kind: "redis" };
+    } catch {
+      if (memory) return { data: memory, kind: "redis" };
+    }
+  }
+
   const kv = kvCredentials();
   if (kv) {
     try {
@@ -108,9 +168,9 @@ export async function loadStore(): Promise<LoadedStore> {
       return { data, kind: "kv" };
     } catch {
       if (memory) return { data: memory, kind: "kv" };
-      return localStore();
     }
   }
+
   return localStore();
 }
 
@@ -123,6 +183,22 @@ export async function saveStore(
     return { ok: false as const, kind: current.kind, data: current.data };
   }
   const written = { ...next, version: expectedVersion + 1 };
+
+  if (redisUrl()) {
+    try {
+      await writeRedis(written);
+      memory = written;
+      return { ok: true as const, kind: "redis" as const, data: written };
+    } catch {
+      memory = written;
+      return {
+        ok: true as const,
+        kind: process.env.VERCEL ? "ephemeral" : "file",
+        data: written,
+      } as const;
+    }
+  }
+
   const kv = kvCredentials();
   if (kv) {
     try {
@@ -135,9 +211,10 @@ export async function saveStore(
         ok: true as const,
         kind: process.env.VERCEL ? "ephemeral" : "file",
         data: written,
-      };
+      } as const;
     }
   }
+
   await writeFileStore(written);
   memory = written;
   return {
@@ -169,7 +246,7 @@ export async function updateStore(
 }
 
 export function storeLabel(kind: StoreKind) {
-  if (kind === "kv") return "saved";
+  if (kind === "kv" || kind === "redis") return "saved";
   if (kind === "file") return "saved on this computer";
   return "temporary";
 }
