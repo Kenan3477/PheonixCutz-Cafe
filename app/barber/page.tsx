@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { BookChair } from "@/components/BookChair";
+import { CutHero } from "@/components/CutHero";
 import { ChairBand, ChairGallery } from "@/components/Sections";
 
 export const metadata: Metadata = {
@@ -11,18 +12,7 @@ export const metadata: Metadata = {
 export default function BarberPage() {
   return (
     <div>
-      <div className="mx-auto max-w-6xl px-5 py-10 md:px-8">
-        <p className="text-sm font-semibold text-teal">Cut</p>
-        <h1 className="mt-2 font-display text-5xl md:text-6xl">
-          Turkish barber prices
-        </h1>
-        <p className="mt-4 max-w-2xl text-muted">
-          Book a free slot below — you can see when I am free. Walk-ins are
-          still welcome if a chair is free. Complimentary Turkish tea while
-          you wait, and a lollipop for the kids. We take cash and card at the
-          cafe; ask at the chair if you want to pay by card for a cut.
-        </p>
-      </div>
+      <CutHero />
       <ChairGallery />
       <ChairBand />
       <BookChair />

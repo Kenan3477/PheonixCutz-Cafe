@@ -38,13 +38,25 @@ export function ChairDesk() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
+  async function readJson<T>(response: Response) {
+    const text = await response.text();
+    if (!text) {
+      throw new Error(
+        response.ok
+          ? "The diary sent an empty reply."
+          : "Could not reach the diary. Try again.",
+      );
+    }
+    return JSON.parse(text) as T;
+  }
+
   async function loadDesk() {
     const response = await fetch("/api/chair/bookings", { cache: "no-store" });
     if (response.status === 401) {
       setSignedIn(false);
       return;
     }
-    const payload = (await response.json()) as DeskPayload;
+    const payload = await readJson<DeskPayload>(response);
     if (!response.ok) throw new Error(payload.error || "Could not open the diary.");
     setData(payload);
     setSignedIn(true);
@@ -58,7 +70,7 @@ export function ChairDesk() {
           setSignedIn(false);
           return;
         }
-        const payload = (await response.json()) as DeskPayload;
+        const payload = await readJson<DeskPayload>(response);
         if (!response.ok) throw new Error(payload.error || "Could not open the diary.");
         setData(payload);
         setSignedIn(true);
@@ -110,7 +122,7 @@ export function ChairDesk() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password }),
       });
-      const payload = (await response.json()) as { error?: string };
+      const payload = await readJson<{ error?: string }>(response);
       if (!response.ok) throw new Error(payload.error || "Could not sign in.");
       setPassword("");
       await loadDesk();
@@ -130,7 +142,7 @@ export function ChairDesk() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      const payload = (await response.json()) as { error?: string };
+      const payload = await readJson<{ error?: string }>(response);
       if (!response.ok) throw new Error(payload.error || "Could not save.");
       setWalkInName("");
       await loadDesk();
@@ -170,7 +182,7 @@ export function ChairDesk() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, status }),
       });
-      const payload = (await response.json()) as { error?: string };
+      const payload = await readJson<{ error?: string }>(response);
       if (!response.ok) throw new Error(payload.error || "Could not update.");
       await loadDesk();
     } catch (err: unknown) {

@@ -68,10 +68,10 @@ export function DualStory() {
       <article className="card overflow-hidden">
         <div className="relative h-64 bg-ink-deep">
           <Image
-            src="/images/real/godaddy-hero.jpg"
-            alt="Phoenix Turkish Barber crossed-shears emblem"
+            src="/images/real/barber-door.jpg"
+            alt="The door into Yusuf’s barber"
             fill
-            className="object-cover"
+            className="object-cover object-[50%_40%]"
             sizes="(min-width: 1024px) 50vw, 100vw"
           />
         </div>
