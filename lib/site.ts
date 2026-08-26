@@ -486,6 +486,34 @@ export const reviews = [
   },
 ] as const;
 
+export const chairGallery = [
+  {
+    src: "/images/real/barber-shop.jpg",
+    alt: "The two chairs under the honeycomb lights",
+    wide: true,
+  },
+  {
+    src: "/images/real/barber-waiting.jpg",
+    alt: "Waiting sofa and the first chair",
+    wide: false,
+  },
+  {
+    src: "/images/real/barber-stations.jpg",
+    alt: "The wooden stations and chairs",
+    wide: false,
+  },
+  {
+    src: "/images/real/barber-station.jpg",
+    alt: "Clippers, sink and the chair ready for a cut",
+    wide: false,
+  },
+  {
+    src: "/images/real/barber-chair.jpg",
+    alt: "The brown leather chair",
+    wide: false,
+  },
+] as const;
+
 export const gallery = [
   {
     src: "/images/real/shop-front.jpg",

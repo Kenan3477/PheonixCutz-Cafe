@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { BookChair } from "@/components/BookChair";
-import { ChairBand } from "@/components/Sections";
+import { ChairBand, ChairGallery } from "@/components/Sections";
 
 export const metadata: Metadata = {
   title: "Haircuts and prices",
@@ -23,6 +23,7 @@ export default function BarberPage() {
           cafe; ask at the chair if you want to pay by card for a cut.
         </p>
       </div>
+      <ChairGallery />
       <ChairBand />
       <BookChair />
     </div>

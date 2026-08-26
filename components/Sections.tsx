@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Eyebrow } from "@/components/Brand";
-import { chair, gallery, kitchen, reviews, site, whatsappHref } from "@/lib/site";
+import { chair, chairGallery, gallery, kitchen, reviews, site, whatsappHref } from "@/lib/site";
 
 export function QuickFacts() {
   return (
@@ -88,6 +88,41 @@ export function DualStory() {
           </Link>
         </div>
       </article>
+    </section>
+  );
+}
+
+export function ChairGallery() {
+  return (
+    <section className="px-5 pb-6 pt-2 md:px-8">
+      <div className="mx-auto max-w-6xl">
+        <Eyebrow>The chair</Eyebrow>
+        <h2 className="mt-2 font-display text-5xl">Inside the barber</h2>
+        <div className="mt-8 grid gap-4 md:grid-cols-2">
+          {chairGallery.map((shot) => (
+            <figure
+              key={shot.src}
+              className={`relative overflow-hidden rounded-[1.6rem] ${
+                shot.wide ? "md:col-span-2 min-h-[320px] md:min-h-[460px]" : "min-h-[280px]"
+              }`}
+            >
+              <Image
+                src={shot.src}
+                alt={shot.alt}
+                fill
+                className={`object-cover ${
+                  shot.src.includes("barber-chair")
+                    ? "object-[50%_32%]"
+                    : shot.src.includes("barber-station.jpg")
+                      ? "object-[50%_42%]"
+                      : ""
+                }`}
+                sizes={shot.wide ? "100vw" : "(min-width: 768px) 50vw, 100vw"}
+              />
+            </figure>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
