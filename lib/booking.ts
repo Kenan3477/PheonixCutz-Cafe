@@ -12,23 +12,23 @@ export const BOOKING_HORIZON_DAYS = 56;
 export const MIN_NOTICE_MINUTES = 20;
 
 const SERVICE_MINUTES: Record<string, number> = {
-  "Hair cut": 30,
-  "Hair cut & wash": 45,
-  "Clipper cut": 30,
-  "Skin fade with zero clipper fade": 45,
-  "Kids haircut": 30,
-  "Kids skin fade with clipper zero fade": 45,
-  "OAP haircut": 30,
-  "Razor head shave": 30,
-  "Turkish wet shave": 30,
-  "Design wet shave": 30,
-  "Beard trim with clipper": 30,
-  "Beard trim line-up with clipper": 30,
-  "Nose wax or ear wax": 15,
-  "Face mask, mud & hot towel wash": 30,
-  "Eyebrow threading": 15,
+  "Hair cut": 20,
+  "Hair cut & wash": 40,
+  "Clipper cut": 20,
+  "Skin fade with zero clipper fade": 30,
+  "Kids haircut": 20,
+  "Kids skin fade with clipper zero fade": 30,
+  "OAP haircut": 20,
+  "Razor head shave": 25,
+  "Turkish wet shave": 25,
+  "Design wet shave": 35,
+  "Beard trim with clipper": 15,
+  "Beard trim line-up with clipper": 20,
+  "Nose wax or ear wax": 10,
+  "Face mask, mud & hot towel wash": 20,
+  "Eyebrow threading": 10,
   "Phoenix Special hair cut": 75,
-  "Phoenix restyle skin fade": 60,
+  "Phoenix restyle skin fade": 50,
 };
 
 export type BookingStatus = "booked" | "blocked" | "done" | "cancelled";
@@ -72,31 +72,31 @@ export type QuickChairAction =
     };
 
 export const quickChairActions: QuickChairAction[] = [
-  { kind: "book", serviceId: "hair-cut", label: "Cut", hint: "30 min · £14" },
+  { kind: "book", serviceId: "hair-cut", label: "Cut", hint: "20 min · £16" },
   {
     kind: "book",
     serviceId: "skin-fade-with-zero-clipper-fade",
     label: "Fade",
-    hint: "45 min · £17",
+    hint: "30 min · £19",
   },
   {
     kind: "book",
     serviceId: "hair-cut-and-wash",
     label: "Wash",
-    hint: "45 min · £18",
+    hint: "40 min · £20",
   },
   {
     kind: "book",
     serviceId: "turkish-wet-shave",
     label: "Shave",
-    hint: "30 min · £12",
+    hint: "25 min · £14",
   },
-  { kind: "book", serviceId: "kids-haircut", label: "Kids", hint: "30 min · £9" },
+  { kind: "book", serviceId: "kids-haircut", label: "Kids", hint: "20 min · £11" },
   {
     kind: "book",
     serviceId: "phoenix-special-hair-cut",
     label: "Special",
-    hint: "75 min · £37",
+    hint: "75 min · £39",
   },
   { kind: "block", minutes: 30, label: "Busy 30", hint: "Hold the chair" },
   { kind: "block", minutes: 45, label: "Busy 45", hint: "Longer hold" },

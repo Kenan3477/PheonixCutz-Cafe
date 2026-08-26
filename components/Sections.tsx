@@ -10,7 +10,7 @@ export function QuickFacts() {
         <Fact label="Hygiene" value={`5/5 · ${site.hygiene.label}`} href={site.hygiene.url} />
         <Fact label="Closed" value="Mondays" />
         <Fact label="Coffee loyalty" value="Buy 6, 7th free" />
-        <Fact label="Haircut from" value="£14 · kids £9" href="/barber" />
+        <Fact label="Haircut from" value="£16 · kids £11" href="/barber" />
       </div>
     </section>
   );

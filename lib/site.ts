@@ -62,7 +62,7 @@ export const site = {
     {
       title: "Kids are welcome",
       detail:
-        "Kids’ cuts from £9. We keep lollipops for them, and we are used to family tables.",
+        "Kids’ cuts from £11. We keep lollipops for them, and we are used to family tables.",
     },
     {
       title: "Easy to reach",
@@ -432,38 +432,38 @@ export const chair = {
     {
       title: "Cuts",
       items: [
-        { name: "Hair cut", price: "£14" },
-        { name: "Hair cut & wash", price: "£18" },
-        { name: "Clipper cut", price: "£14" },
-        { name: "Skin fade with zero clipper fade", price: "£17" },
-        { name: "Kids haircut", price: "£9" },
-        { name: "Kids skin fade with clipper zero fade", price: "£12" },
-        { name: "OAP haircut", price: "£12" },
+        { name: "Hair cut", price: "£16" },
+        { name: "Hair cut & wash", price: "£20" },
+        { name: "Clipper cut", price: "£16" },
+        { name: "Skin fade with zero clipper fade", price: "£19" },
+        { name: "Kids haircut", price: "£11" },
+        { name: "Kids skin fade with clipper zero fade", price: "£14" },
+        { name: "OAP haircut", price: "£14" },
       ],
     },
     {
       title: "Shaves & beard",
       items: [
-        { name: "Razor head shave", price: "£12" },
-        { name: "Turkish wet shave", price: "£12" },
-        { name: "Design wet shave", price: "£14" },
-        { name: "Beard trim with clipper", price: "£12" },
-        { name: "Beard trim line-up with clipper", price: "£12" },
+        { name: "Razor head shave", price: "£14" },
+        { name: "Turkish wet shave", price: "£14" },
+        { name: "Design wet shave", price: "£16" },
+        { name: "Beard trim with clipper", price: "£14" },
+        { name: "Beard trim line-up with clipper", price: "£14" },
       ],
     },
     {
       title: "Details",
       items: [
-        { name: "Nose wax or ear wax", price: "£5" },
-        { name: "Face mask, mud & hot towel wash", price: "£7" },
-        { name: "Eyebrow threading", price: "£3" },
+        { name: "Nose wax or ear wax", price: "£7" },
+        { name: "Face mask, mud & hot towel wash", price: "£9" },
+        { name: "Eyebrow threading", price: "£5" },
       ],
     },
     {
       title: "Phoenix signatures",
       items: [
-        { name: "Phoenix Special hair cut", price: "£37" },
-        { name: "Phoenix restyle skin fade", price: "£40" },
+        { name: "Phoenix Special hair cut", price: "£39" },
+        { name: "Phoenix restyle skin fade", price: "£42" },
       ],
     },
   ],

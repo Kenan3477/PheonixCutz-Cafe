@@ -21,9 +21,10 @@ import {
   slotsNeeded,
 } from "./booking";
 
-test("haircut needs one 30-minute slot and the special needs three", () => {
+test("a 20-minute cut fits one slot and a wash needs two", () => {
+  assert.equal(slotsNeeded(20), 1);
   assert.equal(slotsNeeded(30), 1);
-  assert.equal(slotsNeeded(45), 2);
+  assert.equal(slotsNeeded(40), 2);
   assert.equal(slotsNeeded(75), 3);
 });
 
@@ -45,9 +46,11 @@ test("ranges overlap when they share time", () => {
   assert.equal(rangesOverlap(570, 600, 600, 630), false);
 });
 
-test("a 45-minute cut needs the next slot free", () => {
+test("a fade cannot start on a taken 20-minute cut", () => {
   const service = getService("skin-fade-with-zero-clipper-fade");
   assert.ok(service);
+  assert.equal(service.minutes, 30);
+  assert.equal(getService("hair-cut")?.minutes, 20);
   const existing = createBooking({
     date: "2026-09-15",
     start: "10:00",
@@ -58,7 +61,7 @@ test("a 45-minute cut needs the next slot free", () => {
   });
   const clash = canFitService({
     isoDate: "2026-09-15",
-    start: "09:30",
+    start: "10:00",
     minutes: service.minutes,
     bookings: [existing],
     closedDates: [],
@@ -67,13 +70,13 @@ test("a 45-minute cut needs the next slot free", () => {
 
   const free = canFitService({
     isoDate: "2026-09-15",
-    start: "11:00",
+    start: "10:30",
     minutes: service.minutes,
     bookings: [existing],
     closedDates: [],
   });
   assert.equal(free.ok, true);
-  if (free.ok) assert.equal(free.end, "11:45");
+  if (free.ok) assert.equal(free.end, "11:00");
 });
 
 test("closed dates hide every slot", () => {
@@ -160,21 +163,21 @@ test("money totals ignore blocked and cancelled chairs", () => {
     source: "online",
   });
   const cancelled = { ...cut, id: "2", status: "cancelled" as const, start: "12:00" };
-  assert.equal(pricePence("£14"), 1400);
-  assert.equal(formatPounds(1400), "£14");
-  assert.equal(moneyFor([cut, cancelled], "2026-08-25"), 1400);
+  assert.equal(pricePence("£16"), 1600);
+  assert.equal(formatPounds(1600), "£16");
+  assert.equal(moneyFor([cut, cancelled], "2026-08-25"), 1600);
 });
 
-test("day board marks continuation slots for a 45-minute fade", () => {
-  const fade = createBooking({
+test("day board marks continuation slots for a wash and cut", () => {
+  const wash = createBooking({
     date: "2026-08-25",
     start: "11:00",
-    service: getService("skin-fade-with-zero-clipper-fade")!,
+    service: getService("hair-cut-and-wash")!,
     name: "Sam",
     phone: "+447900000000",
     source: "yusuf",
   });
-  const board = buildDayBoard("2026-08-25", [fade]);
+  const board = buildDayBoard("2026-08-25", [wash]);
   const start = board.find((cell) => cell.start === "11:00");
   const next = board.find((cell) => cell.start === "11:30");
   assert.equal(start?.booking?.customerName, "Sam");
