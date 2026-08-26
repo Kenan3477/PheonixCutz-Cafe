@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import {
+  BOOKING_LOOKBACK_DAYS,
   canFitService,
   chairServices,
   createBooking,
@@ -32,7 +33,11 @@ export async function GET() {
     const today = londonNow().isoDate;
     const horizon = addDaysToIsoDate(today, 70);
     const bookings = data.bookings
-      .filter((booking) => booking.date >= addDaysToIsoDate(today, -2) && booking.date <= horizon)
+      .filter(
+        (booking) =>
+          booking.date >= addDaysToIsoDate(today, -BOOKING_LOOKBACK_DAYS) &&
+          booking.date <= horizon,
+      )
       .sort((a, b) => `${a.date}${a.start}`.localeCompare(`${b.date}${b.start}`));
 
     return NextResponse.json({

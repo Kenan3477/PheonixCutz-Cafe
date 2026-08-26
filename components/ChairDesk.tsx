@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 import { DateWeekSlider } from "@/components/DateWeekSlider";
 import {
   BOOKING_HORIZON_DAYS,
+  BOOKING_LOOKBACK_DAYS,
   bookingPence,
   buildDayBoard,
   displayPhone,
@@ -83,11 +84,14 @@ export function ChairDesk() {
   }, []);
 
   const dayOptions = data
-    ? Array.from({ length: BOOKING_HORIZON_DAYS }, (_, index) =>
-        addDaysToIsoDate(data.today, index),
+    ? Array.from(
+        { length: BOOKING_LOOKBACK_DAYS + BOOKING_HORIZON_DAYS },
+        (_, index) => addDaysToIsoDate(data.today, index - BOOKING_LOOKBACK_DAYS),
       )
     : [];
-  const weekDates = dayOptions.slice(0, 7);
+  const weekDates = data
+    ? Array.from({ length: 7 }, (_, index) => addDaysToIsoDate(data.today, index))
+    : [];
   const dayClosed = Boolean(data?.closedDates.includes(date));
   const dayBookings = useMemo(
     () =>

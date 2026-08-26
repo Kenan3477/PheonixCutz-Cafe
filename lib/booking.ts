@@ -9,6 +9,7 @@ import {
 
 export const SLOT_MINUTES = 30;
 export const BOOKING_HORIZON_DAYS = 56;
+export const BOOKING_LOOKBACK_DAYS = 28;
 export const MIN_NOTICE_MINUTES = 20;
 
 const SERVICE_MINUTES: Record<string, number> = {

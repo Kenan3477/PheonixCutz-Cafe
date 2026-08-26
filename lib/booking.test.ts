@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  BOOKING_LOOKBACK_DAYS,
   activeBookings,
   bookingOccupies,
   buildDayBoard,
@@ -183,6 +184,10 @@ test("day board marks continuation slots for a wash and cut", () => {
   assert.equal(start?.booking?.customerName, "Sam");
   assert.equal(start?.continuation, false);
   assert.equal(next?.continuation, true);
+});
+
+test("the diary keeps four weeks of history", () => {
+  assert.equal(BOOKING_LOOKBACK_DAYS, 28);
 });
 
 test("the diary opens even when remote storage is missing", async () => {
