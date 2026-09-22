@@ -102,7 +102,17 @@ export async function chairCookieOptions() {
   };
 }
 
-export async function isChairSignedIn() {
+export function tokenFromRequest(request?: Request) {
+  const header = request?.headers.get("authorization") ?? "";
+  if (header.toLowerCase().startsWith("bearer ")) {
+    return header.slice(7).trim();
+  }
+  return "";
+}
+
+export async function isChairSignedIn(request?: Request) {
+  const bearer = tokenFromRequest(request);
+  if (bearer && readChairSession(bearer)) return true;
   const jar = await cookies();
   return readChairSession(jar.get(COOKIE)?.value);
 }

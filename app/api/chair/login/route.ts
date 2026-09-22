@@ -35,8 +35,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "That password is not right." }, { status: 401 });
     }
 
-    const response = NextResponse.json({ ok: true });
-    response.cookies.set(chairCookieName(), createChairSession(), await chairCookieOptions());
+    const token = createChairSession();
+    const response = NextResponse.json({ ok: true, token });
+    response.cookies.set(chairCookieName(), token, await chairCookieOptions());
     return response;
   } catch {
     return NextResponse.json({ error: "Could not sign in. Try again." }, { status: 500 });

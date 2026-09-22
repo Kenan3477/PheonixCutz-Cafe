@@ -19,6 +19,11 @@
 AGENTS.md
 CLAUDE.md
 
+# expo
+/mobile/node_modules
+/mobile/.expo
+/mobile/dist
+
 # production
 /build
 

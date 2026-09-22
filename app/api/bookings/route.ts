@@ -132,7 +132,7 @@ export async function POST(request: Request) {
     next: nextAvailableSlot(saved.data, service.minutes),
     whatsapp: whatsappHref(
       [
-        `Hi Yusuf — I booked on the Phoenix website.`,
+        `Hi Yusuf — I booked at Phoenix Cutz.`,
         `Name: ${name}`,
         `Service: ${service.name}`,
         `Time: ${date} at ${start}`,
