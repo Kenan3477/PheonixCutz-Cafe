@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
-  Keyboard,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -9,7 +8,6 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import {
@@ -203,8 +201,11 @@ export function ChairScreen() {
         style={styles.flex}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <ScrollView style={styles.page} contentContainerStyle={styles.content}>
+        <ScrollView
+          style={styles.page}
+          contentContainerStyle={styles.content}
+          keyboardShouldPersistTaps="handled"
+        >
             <Text style={styles.kicker}>Chair diary</Text>
             <Text style={styles.title}>Yusuf’s book</Text>
             <Text style={styles.lead}>
@@ -229,7 +230,6 @@ export function ChairScreen() {
               </Text>
             </Pressable>
           </ScrollView>
-        </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     );
   }
@@ -239,8 +239,11 @@ export function ChairScreen() {
       style={styles.flex}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <ScrollView style={styles.page} contentContainerStyle={styles.content}>
+      <ScrollView
+        style={styles.page}
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+      >
           <Text style={styles.kicker}>Chair diary</Text>
           <Text style={styles.title}>The book</Text>
           <Text style={styles.lead}>
@@ -374,7 +377,6 @@ export function ChairScreen() {
             <Text style={styles.signOutText}>Sign out</Text>
           </Pressable>
         </ScrollView>
-      </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
 }

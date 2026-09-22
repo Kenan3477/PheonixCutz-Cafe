@@ -2,7 +2,6 @@ import * as Linking from "expo-linking";
 import { useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
-  Keyboard,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -10,7 +9,6 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { fetchAvailability, holdSlot } from "./api";
@@ -124,8 +122,11 @@ export function BookScreen() {
       style={styles.flex}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <ScrollView style={styles.page} contentContainerStyle={styles.content}>
+      <ScrollView
+        style={styles.page}
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+      >
           <Text style={styles.kicker}>Book the chair</Text>
           <Text style={styles.title}>Yusuf’s book</Text>
           <Text style={styles.lead}>
@@ -266,8 +267,7 @@ export function BookScreen() {
               {saving ? "Holding…" : "Hold this time"}
             </Text>
           </Pressable>
-        </ScrollView>
-      </TouchableWithoutFeedback>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 }

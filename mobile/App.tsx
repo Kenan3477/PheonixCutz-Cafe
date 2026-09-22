@@ -35,7 +35,13 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.inkDeep },
+  safe: {
+    flex: 1,
+    backgroundColor: colors.inkDeep,
+    width: "100%",
+    maxWidth: 430,
+    alignSelf: "center",
+  },
   tabs: {
     flexDirection: "row",
     gap: 8,
