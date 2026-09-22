@@ -53,7 +53,7 @@ test("a fade cannot start on a taken 20-minute cut", () => {
   assert.equal(service.minutes, 30);
   assert.equal(getService("hair-cut")?.minutes, 20);
   const existing = createBooking({
-    date: "2026-09-15",
+    date: "2026-10-06",
     start: "10:00",
     service: getService("hair-cut")!,
     name: "Sam",
@@ -61,7 +61,7 @@ test("a fade cannot start on a taken 20-minute cut", () => {
     source: "yusuf",
   });
   const clash = canFitService({
-    isoDate: "2026-09-15",
+    isoDate: "2026-10-06",
     start: "10:00",
     minutes: service.minutes,
     bookings: [existing],
@@ -70,7 +70,7 @@ test("a fade cannot start on a taken 20-minute cut", () => {
   assert.equal(clash.ok, false);
 
   const free = canFitService({
-    isoDate: "2026-09-15",
+    isoDate: "2026-10-06",
     start: "10:30",
     minutes: service.minutes,
     bookings: [existing],
@@ -110,9 +110,9 @@ test("UK mobile numbers normalise to +44", () => {
 
 test("taken times disappear from the public calendar immediately", () => {
   const store = emptyBookingStore();
-  const days = buildPublicDays(store, "2026-09-15", 1, 30);
+  const days = buildPublicDays(store, "2026-10-06", 1, 30);
   assert.ok(days[0]);
-  const occupied = occupyPublicDays(days, "2026-09-15", "11:00", 45);
+  const occupied = occupyPublicDays(days, "2026-10-06", "11:00", 45);
   const eleven = occupied[0]?.slots.find((slot) => slot.start === "11:00");
   const elevenThirty = occupied[0]?.slots.find((slot) => slot.start === "11:30");
   const twelve = occupied[0]?.slots.find((slot) => slot.start === "12:00");

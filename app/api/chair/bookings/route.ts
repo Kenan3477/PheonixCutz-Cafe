@@ -17,15 +17,15 @@ import { addDaysToIsoDate, londonNow } from "@/lib/london";
 
 export const dynamic = "force-dynamic";
 
-async function requireChair() {
-  if (!(await isChairSignedIn())) {
+async function requireChair(request?: Request) {
+  if (!(await isChairSignedIn(request))) {
     return NextResponse.json({ error: "Sign in to the chair diary." }, { status: 401 });
   }
   return null;
 }
 
-export async function GET() {
-  const denied = await requireChair();
+export async function GET(request: Request) {
+  const denied = await requireChair(request);
   if (denied) return denied;
 
   try {
@@ -57,7 +57,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const denied = await requireChair();
+  const denied = await requireChair(request);
   if (denied) return denied;
 
   let body: {
@@ -229,7 +229,7 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  const denied = await requireChair();
+  const denied = await requireChair(request);
   if (denied) return denied;
 
   let body: { id?: string; status?: string };
